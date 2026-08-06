@@ -1,0 +1,36 @@
+# Environment variables
+project/.env
+
+# Cache directories
+project/data/cache/
+project/__pycache__/
+
+# Logs
+project/logs/
+
+# Processed and raw data (generated files)
+project/data/processed/
+project/data/raw/
+
+# Vector database files
+project/vector_db/
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
