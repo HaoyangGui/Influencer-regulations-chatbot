@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import chromadb
 from chromadb.config import Settings
@@ -38,6 +39,10 @@ class VectorStore:
                 "paragraph_index": chunk.paragraph_index,
                 "translated_paragraph": chunk.translated_paragraph,
                 "embedding_text_en": chunk.embedding_text_en,
+                "source_language": chunk.source_language or "nl",
+                # ChromaDB metadata cannot hold nested structures, so serialise the
+                # language->text map to JSON for later quotation look-up.
+                "translations": json.dumps(chunk.translations, ensure_ascii=False),
             }
             if processed_file:
                 meta["processed_file"] = processed_file
@@ -62,3 +67,24 @@ class VectorStore:
 
     def get_collection(self):
         return self.collection
+
+    def get_collection_metadata(self) -> Dict[str, Any]:
+        try:
+            return dict(self.collection.metadata or {})
+        except Exception:
+            return {}
+
+    def set_collection_metadata(self, metadata: Dict[str, Any]) -> None:
+        try:
+            self.collection.modify(metadata=metadata)
+        except Exception:
+            pass
+
+    def delete_by_source_url(self, source_url: str) -> None:
+        try:
+            results = self.collection.get(where={"source_url": source_url})
+            ids = results.get("ids", [])
+            if ids:
+                self.collection.delete(ids=ids)
+        except Exception:
+            pass

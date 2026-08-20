@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import json
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -19,6 +19,11 @@ class Chunk:
 
     translated_paragraph: str = ""
     embedding_text_en: str = ""
+
+    # language code of the original (source) text
+    source_language: str = "nl"
+    # mapping of language code -> text for that language
+    translations: Dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return asdict(self)

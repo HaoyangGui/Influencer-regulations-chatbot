@@ -142,20 +142,74 @@ class TranslationModel:
                 ordered_results.append(translated)
         return ordered_results
 
-    def detect_language(self, text: str) -> str:
-        normalized = text.strip()
-        if not normalized:
-            return "en"
 
-        try:
-            from langdetect import detect
+def normalize_language_code(lang: str) -> str:
+    """Normalize a detected language label/full name to a short ISO-ish code.
 
-            return detect(normalized)
-        except Exception:
-            pass
+    e.g. "dutch" -> "nl", "german" -> "de", "fr" -> "fr". Falls back to the
+    first two characters of the label, or "en" when nothing can be inferred.
+    """
+    label = (lang or "").strip().lower()
+    full = {
+        "dutch": "nl", "netherlands": "nl", "flemish": "nl",
+        "english": "en", "french": "fr", "german": "de", "germanic": "de",
+        "spanish": "es", "italian": "it", "portuguese": "pt",
+        "chinese": "zh", "japanese": "ja", "korean": "ko", "javanese": "jv",
+        "afrikaans": "af", "arabic": "ar", "czech": "cs", "danish": "da",
+        "greek": "el", "finnish": "fi", "hindi": "hi", "croatian": "hr",
+        "hungarian": "hu", "indonesian": "id", "icelandic": "is",
+        "malay": "ms", "norwegian": "no", "polish": "pl", "romanian": "ro",
+        "russian": "ru", "swedish": "sv", "thai": "th", "turkish": "tr",
+        "vietnamese": "vi", "persian": "fa", "hebrew": "he",
+        "mandarin": "zh", "cantonese": "zh", "ukrainian": "uk",
+    }
+    if label in full:
+        return full[label]
+    if len(label) >= 2 and label[:2].isalpha():
+        return label[:2]
+    return "en"
 
-        if any("\u4e00" <= ch <= "\u9fff" for ch in normalized):
-            return "zh"
-        if any(ch in normalized for ch in ["á", "é", "í", "ó", "ú", "ü", "ö", "ä", "ß"]):
-            return "nl"
+
+def detect_language(text: str) -> str:
+    normalized = text.strip()
+    if not normalized:
         return "en"
+
+    try:
+        from langdetect import detect
+
+        return normalize_language_code(detect(normalized))
+    except Exception:
+        pass
+    return "en"
+
+
+_LANGUAGE_NAMES: dict[str, str] = {
+    "en": "English", "nl": "Dutch", "fr": "French", "de": "German",
+    "es": "Spanish", "it": "Italian", "pt": "Portuguese", "zh": "Chinese",
+    "ja": "Japanese", "ko": "Korean", "ru": "Russian", "ar": "Arabic",
+    "hi": "Hindi", "tr": "Turkish", "pl": "Polish", "sv": "Swedish",
+    "da": "Danish", "no": "Norwegian", "fi": "Finnish", "cs": "Czech",
+    "hu": "Hungarian", "ro": "Romanian", "el": "Greek", "id": "Indonesian",
+    "ms": "Malay", "th": "Thai", "vi": "Vietnamese", "uk": "Ukrainian",
+    "fa": "Persian", "he": "Hebrew", "af": "Afrikaans", "hr": "Croatian",
+    "is": "Icelandic", "jv": "Javanese",
+}
+
+
+def language_name(code: str) -> str:
+    """Human-readable name for a language code/label.
+
+    Deliberately not restricted to a fixed set: the codebase supports an
+    arbitrary number of languages, so unknown codes fall back to the raw
+    label (or the normalised code) instead of being dropped or assumed.
+    """
+    label = (code or "").strip()
+    normalized = normalize_language_code(label)
+    known = _LANGUAGE_NAMES.get(normalized)
+    if known:
+        return known
+    # A readable full label (e.g. "Dutch", "Mandarin") beats an internal code.
+    if len(label) >= 2:
+        return label
+    return normalized or "en"

@@ -1,11 +1,31 @@
-requests
-beautifulsoup4
-sentence-transformers
-chromadb
-torch
-transformers
-sentencepiece
-litellm
-pytest
-fastapi
-uvicorn
+# Python version: 3.12.3 (minimum supported: 3.10)
+# Generated from the currently installed environment (python -m pip list).
+
+# Web / API
+fastapi==0.141.1
+uvicorn==0.52.0
+pydantic==2.13.4
+
+# HTTP / scraping
+requests==2.34.2
+beautifulsoup4==4.15.0
+
+# Machine learning / embeddings / vector store
+torch==2.13.0
+transformers==5.14.1
+sentencepiece==0.2.2
+sentence-transformers==5.6.1
+chromadb==1.5.9
+litellm==1.95.0
+
+# Text utilities (sentence splitting and language detection)
+nltk==3.10.3
+langdetect==1.0.9
+tiktoken==0.13.0
+
+# Configuration
+python-dotenv==1.2.2
+
+# Testing
+pytest==9.1.1
+

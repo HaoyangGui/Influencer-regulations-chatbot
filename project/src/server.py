@@ -33,44 +33,27 @@ class AnswerRequest(BaseModel):
     preview_tokens: bool = False
 
 
+class EvidenceItem(BaseModel):
+    """One retrieved chunk that served as the RAG basis for the answer."""
+    chunk_id: str
+    similarity: float
+    paragraph_index: int
+    heading: str
+    source_name: str
+    source_url: str
+    quotation: str
+    language: str
+    original_text: str
+
+
 class AnswerResponse(BaseModel):
     answer: str
     cited_indices: List[int]
+    language: str
+    request_language: str
     timings: Dict[str, float]
+    evidence: List[EvidenceItem]
     metadata: Optional[Dict[str, Any]] = None
-
-
-def _load_chunks_from_file(chunks_path: Path, source_url: str, paragraph_index: int) -> Optional[dict]:
-    """Load chunk info directly from chunks.json file.
-    
-    Args:
-        chunks_path: Path to chunks.json
-        source_url: Source URL to look up
-        paragraph_index: Paragraph index to look up
-        
-    Returns:
-        Dict with chunk_id, source_name, processed_file or None if not found
-    """
-    if not chunks_path.exists():
-        return None
-    
-    try:
-        with chunks_path.open("r", encoding="utf-8") as f:
-            chunks_data = json.load(f)
-        
-        # Find the chunk matching source_url and paragraph_index
-        for chunk in chunks_data:
-            if (chunk.get("source_url") == source_url and 
-                chunk.get("paragraph_index") == paragraph_index):
-                return {
-                    "chunk_id": chunk.get("chunk_id", ""),
-                    "source_name": chunk.get("source_name", ""),
-                    "processed_file": str(chunks_path.relative_to(Path(__file__).resolve().parent.parent))
-                }
-    except Exception as exc:
-        print(f"Error loading chunks from file: {exc}")
-    
-    return None
 
 
 @asynccontextmanager
@@ -119,8 +102,28 @@ async def lifespan(app: FastAPI):
     EMBEDDING = EmbeddingModel()
     timings["embedding_init"] = time.perf_counter() - t0
 
+    # Sync the data/cache against its original sources before exposing the server.
+    # Any source whose cached content is missing or differs from the live page is
+    # rebuilt so that the vector DB, chunks and downstream caches stay consistent.
     t0 = time.perf_counter()
     VECTOR_DIR = project_root / "vector_db"
+    from src.vectorstore import VectorStore
+    from src.cache_sync import sync_all_sources
+
+    vector_store = VectorStore(persist_directory=VECTOR_DIR)
+    updated_sources = sync_all_sources(
+        project_root=project_root,
+        vector_store=vector_store,
+        translator=TRANSLATOR,
+        embedding_model=EMBEDDING,
+    )
+    timings["cache_sync"] = time.perf_counter() - t0
+    if updated_sources:
+        print(f"Updated {len(updated_sources)} source(s) on startup: {updated_sources}")
+    else:
+        print("All cached sources are up to date.")
+
+    t0 = time.perf_counter()
     RETRIEVER = Retriever(vector_dir=VECTOR_DIR, translator=TRANSLATOR, embedding_model=EMBEDDING)
     timings["retriever_init"] = time.perf_counter() - t0
 
@@ -233,61 +236,77 @@ async def answer(req: AnswerRequest) -> AnswerResponse:
     timings: Dict[str, float] = {}
     t0 = time.perf_counter()
 
-    # Retrieval
+    # Retrieval happens exactly once. The same ``results`` are used to build the
+    # LLM prompt AND to return the RAG basis to the caller, so the answer and
+    # its evidence always stay consistent (no re-retrieval or drift).
     retrieval_start = time.perf_counter()
     results = await _run_blocking(RETRIEVER.retrieve, req.question, req.top_k)
     timings["retrieval"] = time.perf_counter() - retrieval_start
 
-    # Build prompt
-    prompt_build_start = time.perf_counter()
-    prompt = await _run_blocking(RETRIEVER.build_prompt, req.question, results)
-    timings["prompt_build"] = time.perf_counter() - prompt_build_start
-
-    # Call LLM
+    # The LLM answer is generated from those exact retrieved chunks. ``answer()``
+    # reuses them (it does not re-run retrieval) so the evidence below matches
+    # precisely the RAG chunks used for the judgment.
     llm_start = time.perf_counter()
-    answer_text, used_results = await _run_blocking(RETRIEVER.answer, req.question, req.top_k, req.max_tokens)
+    answer_text, used_results, answer_language = await _run_blocking(
+        RETRIEVER.answer, req.question, req.top_k, req.max_tokens, results,
+    )
     timings["llm_generation"] = time.perf_counter() - llm_start
 
     timings["total"] = time.perf_counter() - t0
 
     cited_indices = _extract_cited_indices(answer_text)
 
-    # Serialize used_results and load chunk info directly from file
-    project_root = Path(__file__).resolve().parent.parent
-    chunks_path = project_root / "data" / "processed" / "chunks.json"
-    
+    # Build the RAG evidence list: exactly the chunks used to answer, each with
+    # its chunk_id, similarity and the quotation (with its language) actually
+    # fed to the model. This is what the answerer used to make its judgment.
+    evidence: List[EvidenceItem] = []
+    for r in (used_results or []):
+        evidence.append(
+            EvidenceItem(
+                chunk_id=r.chunk_id,
+                similarity=round(float(r.similarity), 6),
+                paragraph_index=r.paragraph_index,
+                heading=r.heading,
+                source_name=r.source_name,
+                source_url=r.source_url,
+                quotation=r.quotation,
+                language=r.quotation_language,
+                original_text=r.original_paragraph,
+            )
+        )
+
+    # Serialize used_results so clients can correlate 1-based citations with
+    # the RAG basis + chunk ids (chunk_id is already read from vector metadata).
     results_serialized = None
     try:
         if used_results:
             results_serialized = []
-            for r in used_results:
+            for idx, r in enumerate(used_results, start=1):
                 res_dict = asdict(r)
-                
-                # Load chunk info directly from file for each result
-                source_url = res_dict.get('source_url', '')
-                paragraph_index = res_dict.get('paragraph_index')
-                
-                if source_url and paragraph_index is not None:
-                    chunk_info = _load_chunks_from_file(chunks_path, source_url, paragraph_index)
-                    if chunk_info:
-                        res_dict['chunk_id'] = chunk_info['chunk_id']
-                        res_dict['source_name'] = chunk_info['source_name']
-                        res_dict['processed_file'] = chunk_info['processed_file']
-                
-                # Ensure defaults if not found
-                if not res_dict.get('processed_file'):
-                    res_dict['processed_file'] = 'data/processed/chunks.json'
-                if not res_dict.get('source_name'):
-                    res_dict['source_name'] = 'De belangrijkste regels voor video-uploaders'
-                
+                # Chip-provided defaults when metadata omits them.
+                res_dict.setdefault("processed_file", "data/processed/chunks.json")
+                res_dict.setdefault("source_name", "De belangrijkste regels voor video-uploaders")
+                res_dict["rank"] = idx
                 results_serialized.append(res_dict)
     except Exception as exc:
         print(f"Error serializing results: {exc}")
         results_serialized = None
 
-    metadata = {"results": results_serialized} if results_serialized is not None else None
+    metadata = {
+        "results": results_serialized,
+        "query_language": answer_language,
+        "request_language": answer_language,
+    } if results_serialized is not None else None
 
-    return AnswerResponse(answer=answer_text, cited_indices=cited_indices, timings=timings, metadata=metadata)
+    return AnswerResponse(
+        answer=answer_text,
+        cited_indices=cited_indices,
+        language=answer_language,
+        request_language=answer_language,
+        timings=timings,
+        evidence=evidence,
+        metadata=metadata,
+    )
 
 
 def _run_server():

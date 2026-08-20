@@ -11,8 +11,13 @@ from typing import Any, Dict, List
 
 from dotenv import load_dotenv
 
-# Ensure the project root is on the Python path when the script is executed from src/.
+# Ensure the project root is on the Python path when the script is executed from src/
+# or imported as a module, so that ``src.*`` imports resolve correctly below.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from src.chunker import chunk_document, save_chunks_to_json
+from src.crawler import download_and_save_markdown
+from src.vectorstore import VectorStore
 
 # Heavy modules (transformers, sentence_transformers, torch) are imported later to avoid long startup delays
 # They are imported lazily after environment variables are printed so the user sees quick feedback.
@@ -133,6 +138,8 @@ def build_vector_database(
     translator: TranslationModel | None = None,
     embedding_model: EmbeddingModel | None = None,
     chunk_max_tokens: int = 800,
+    vector_store: VectorStore | None = None,
+    project_root: Path | None = None,
 ) -> None:
     print(f"Downloading and cleaning webpage: {source_url}")
     start = time.perf_counter()
@@ -157,28 +164,57 @@ def build_vector_database(
 
     print("Translating chunks to English for embeddings...")
     start = time.perf_counter()
+    from src.translator import TranslationModel, detect_language
+
     translator = translator or TranslationModel()
     english_texts = translator.translate_batch([chunk.embedding_text for chunk in chunks])
     translated_paragraphs = translator.translate_batch([chunk.original_paragraph for chunk in chunks])
+    # Detect the source document language from its raw markdown, so quotations can
+    # be returned in the right language for any query (not hardcoded to nl/en).
+    source_lang = detect_language(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else "nl"
     for chunk, english_text, translated_paragraph in zip(chunks, english_texts, translated_paragraphs):
         chunk.embedding_text_en = english_text
         chunk.translated_paragraph = translated_paragraph
+        chunk.source_language = source_lang
+        chunk.translations[source_lang] = chunk.original_paragraph
+        chunk.translations["en"] = translated_paragraph
     print(f"Translation finished in {time.perf_counter() - start:.2f}s")
 
     print("Generating embeddings...")
     start = time.perf_counter()
+    from src.embedding import EmbeddingModel
+
     embedding_model = embedding_model or EmbeddingModel()
-    embeddings = embedding_model.embed_texts([chunk.embedding_text_en for chunk in chunks])
+    # Embed the original (source-language) text with the multilingual model so
+    # queries in any language map to the same vector space. The English
+    # translation is still kept in the chunk metadata for cross-lingual quotes.
+    embeddings = embedding_model.embed_texts([chunk.embedding_text for chunk in chunks])
     print(f"Embedding finished in {time.perf_counter() - start:.2f}s")
 
     save_chunks_to_json(chunks, chunks_path)
 
     print("Storing vectors...")
     start = time.perf_counter()
-    vector_store = VectorStore(persist_directory=vector_dir)
+    if project_root is None:
+        project_root = Path(__file__).resolve().parent.parent
+    if vector_store is None:
+        vector_store = VectorStore(persist_directory=vector_dir)
+    # Clean old chunks for this source before inserting the rebuilt ones
+    try:
+        vector_store.delete_by_source_url(source_url)
+    except Exception:
+        pass
     # Store the relative path from project root for proper source file identification
     processed_file_relative = chunks_path.relative_to(project_root)
     vector_store.store_chunks(chunks, embeddings, processed_file=str(processed_file_relative))
+    # Record which embedding model + text field produced these vectors, so the
+    # server can detect an embedding change and trigger a full re-embed.
+    try:
+        vector_store.set_collection_metadata(
+            {"embedding_model": embedding_model.model_name, "embedded_field": "original_text"}
+        )
+    except Exception:
+        pass
     print(f"Vector store write finished in {time.perf_counter() - start:.2f}s")
     print(f"Vector database build complete for {source_name}.")
 
@@ -375,22 +411,29 @@ def main() -> None:
     if results_meta and cited_indices:
         print("\nEvidence quotes cited in answer:")
         seen = set()
+        # Renumber cited quotes with normal sequential counting (1, 2, 3, ...),
+        # regardless of the raw citation numbers the answer happens to use
+        # (e.g. an answer that only cites [1] and [3] lists just two quotes, [1] and [2]).
+        citation_number = 0
         for index in cited_indices:
             if index in seen or index < 1 or index > len(results_meta):
                 continue
             seen.add(index)
+            citation_number += 1
             res = results_meta[index - 1]
             processed_file = res.get('processed_file') or res.get('processed_file', '')
             chunk_id = res.get('chunk_id', '')
-            # Strip source hash prefix to match chunks.json format (e.g., "fbfc3e65862a-chunk-6" -> "chunk-6")
+            # Strip source hash prefix to match chunks.json format (e.g., "fbfbc3e65862a-chunk-6" -> "chunk-6")
             if chunk_id and '-' in chunk_id:
                 parts = chunk_id.split('-')
                 if len(parts) >= 3 and parts[-2] == 'chunk':
                     chunk_id = f"chunk-{parts[-1]}"
-            print(f"File: {processed_file}  Chunk: {chunk_id}")
-            snippet = res.get('original_paragraph','').strip()
+            print(f"[{citation_number}] File: {processed_file}  Chunk: {chunk_id}")
+            snippet = (res.get('quotation') or res.get('translated_paragraph') or res.get('original_paragraph') or '').strip()
             if snippet:
-                print(f"   Quote: {snippet}")
+                q_lang = res.get('quotation_language') or ''
+                lang_tag = f" [{q_lang}]" if q_lang else ""
+                print(f"   Quote{lang_tag}: {snippet}")
     else:
         print("\nNo cited evidence quotes were detected or available.")
 

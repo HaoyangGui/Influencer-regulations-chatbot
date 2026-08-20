@@ -13,7 +13,10 @@ from sentence_transformers import SentenceTransformer
 
 @dataclass
 class EmbeddingModel:
-    model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
+    # Multilingual model so queries in any language share one embedding space
+    # with the stored chunk vectors (matching the requirement that the language
+    # used for similarity computation follows the user's input language).
+    model_name: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     model: SentenceTransformer | None = None
     batch_size: int = 32
     device: str | None = None
