@@ -20,6 +20,11 @@ class Chunk:
     translated_paragraph: str = ""
     embedding_text_en: str = ""
 
+    # Name of the individual source document this chunk came from. For
+    # multi-document sources (e.g. a folder of PDFs) each chunk records which
+    # document it belongs to, so the RAG system can query one document alone.
+    document_name: str = ""
+
     # language code of the original (source) text
     source_language: str = "nl"
     # mapping of language code -> text for that language
@@ -38,6 +43,73 @@ def _normalize_text(text: str) -> str:
     text = re.sub(r"[ \t\xa0]+", " ", text)
     text = re.sub(r"\s*\n\s*", "\n", text)
     return text.strip()
+
+
+_HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
+_LIST_ITEM_RE = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+(.*)$")
+_HORIZONTAL_RULE_RE = re.compile(r"^\s*(?:[-*_]\s*){3,}$")
+
+
+def _split_markdown_blocks(markdown_text: str) -> List[tuple[str, str]]:
+    """Walk markdown line by line and emit ``(heading, paragraph)`` blocks.
+
+    Mirrors ``03_chunk``'s parsing approach: every ATX heading switches the
+    active section, every blank line closes the current paragraph and every
+    list item is treated as its own paragraph, so PDF-derived OCR markdown is
+    separated per paragraph exactly like crawled web pages. The project's
+    existing heading rule is kept: the chunk heading is simply the most recent
+    heading title (no hierarchy suffix).
+    """
+    blocks: List[tuple[str, str]] = []
+    heading = ""
+    buffer: List[str] = []
+    in_code_fence = False
+
+    def flush_buffer() -> None:
+        nonlocal buffer
+        if not buffer:
+            return
+        paragraph = " ".join(line.strip() for line in buffer if line.strip()).strip()
+        buffer = []
+        if paragraph:
+            blocks.append((heading, paragraph))
+
+    for raw_line in markdown_text.replace("\r\n", "\n").splitlines():
+        line = raw_line.strip()
+
+        if line.startswith("```"):
+            flush_buffer()
+            in_code_fence = not in_code_fence
+            continue
+        if in_code_fence:
+            buffer.append(raw_line)
+            continue
+        if not line:
+            flush_buffer()
+            continue
+
+        heading_match = _HEADING_RE.match(line)
+        if heading_match:
+            flush_buffer()
+            heading = heading_match.group(2).strip()
+            continue
+
+        if _HORIZONTAL_RULE_RE.match(line):
+            flush_buffer()
+            continue
+
+        list_match = _LIST_ITEM_RE.match(line)
+        if list_match:
+            flush_buffer()
+            item_text = list_match.group(1).strip()
+            if item_text:
+                blocks.append((heading, item_text))
+            continue
+
+        buffer.append(line)
+
+    flush_buffer()
+    return blocks
 
 
 def _split_into_sentences(text: str) -> List[str]:
@@ -68,88 +140,47 @@ def _estimate_tokens_for_text(text: str) -> int:
         return max(1, len(text) // 4)
 
 
-def chunk_document(markdown_text: str, source_name: str, source_url: str, *, max_tokens: int = 800, min_sentences: int = 1) -> List[Chunk]:
+def chunk_document(
+    markdown_text: str,
+    source_name: str,
+    source_url: str,
+    *,
+    max_tokens: int = 800,
+    min_sentences: int = 1,
+    document_name: str = "",
+) -> List[Chunk]:
 
     """
-    Improved chunking:
-    - Split the document into sections by headings
-    - Split sections into sentences (prefer nltk)
-    - Group sentences into chunks aiming for ~max_tokens (using tiktoken when available)
+    Paragraph-aware chunking (mirrors ``03_chunk``'s parsing):
+
+    - Walk the markdown line by line; headings switch the active section,
+      blank lines close paragraphs and list items are their own paragraph,
+      so PDF-derived OCR markdown is separated per paragraph like web pages.
+    - Split each paragraph into sentences (prefer nltk).
+    - Group sentences into chunks aiming for ~max_tokens (tiktoken when
+      available); chunks never span paragraph boundaries.
     """
-    text = _normalize_text(markdown_text)
-    lines = text.splitlines()
-
-    # Build sections: tuples of (heading, section_text)
-    sections: List[tuple[str, str]] = []
-    current_heading = ""
-    buffer_lines: List[str] = []
-
-    def flush_section():
-        nonlocal buffer_lines, current_heading
-        section_text = "\n".join(buffer_lines).strip()
-        if section_text:
-            sections.append((current_heading, section_text))
-        buffer_lines = []
-
-    for raw in lines:
-        line = raw.strip()
-        if not line:
-            # keep paragraphs
-            buffer_lines.append("")
-            continue
-        if line.startswith("#"):
-            # heading
-            flush_section()
-            # heading text after hashes
-            heading = line.lstrip("#").strip()
-            current_heading = heading
-            continue
-        buffer_lines.append(line)
-
-    flush_section()
+    blocks = _split_markdown_blocks(markdown_text)
 
     chunks: List[Chunk] = []
     chunk_idx = 0
     para_idx = 0
 
-    for heading, section_text in sections:
-        # Split section into paragraphs
-        paragraphs = [p.strip() for p in section_text.split("\n\n") if p.strip()]
-        for para in paragraphs:
-            para_idx += 1
-            # Split paragraph into sentences
-            sentences = _split_into_sentences(para)
-            if not sentences:
-                continue
+    for heading, paragraph in blocks:
+        para_idx += 1
 
-            current_chunk_sentences: List[str] = []
-            current_chunk_tokens = 0
+        # Split paragraph into sentences
+        sentences = _split_into_sentences(paragraph)
+        if not sentences:
+            continue
 
-            for sent in sentences:
-                sent_tokens = _estimate_tokens_for_text(sent)
-                if current_chunk_sentences and (current_chunk_tokens + sent_tokens > max_tokens):
-                    # flush current chunk
-                    chunk_idx += 1
-                    chunk_text = " ".join(current_chunk_sentences)
-                    embedding_text = f"{heading}\n\n{chunk_text}".strip()
-                    chunk = Chunk(
-                        chunk_id=f"chunk-{chunk_idx}",
-                        heading=heading,
-                        source_name=source_name,
-                        source_url=source_url,
-                        paragraph_index=para_idx,
-                        original_paragraph=chunk_text,
-                        embedding_text=embedding_text,
-                    )
-                    chunks.append(chunk)
-                    current_chunk_sentences = [sent]
-                    current_chunk_tokens = sent_tokens
-                else:
-                    current_chunk_sentences.append(sent)
-                    current_chunk_tokens += sent_tokens
+        current_chunk_sentences: List[str] = []
+        current_chunk_tokens = 0
 
-            # flush any remaining sentences in the paragraph
-            if current_chunk_sentences:
+        for sent in sentences:
+            sent_tokens = _estimate_tokens_for_text(sent)
+            if current_chunk_sentences and (current_chunk_tokens + sent_tokens > max_tokens):
+                # flush current chunk
                 chunk_idx += 1
                 chunk_text = " ".join(current_chunk_sentences)
                 embedding_text = f"{heading}\n\n{chunk_text}".strip()
@@ -161,8 +192,31 @@ def chunk_document(markdown_text: str, source_name: str, source_url: str, *, max
                     paragraph_index=para_idx,
                     original_paragraph=chunk_text,
                     embedding_text=embedding_text,
+                    document_name=document_name,
                 )
                 chunks.append(chunk)
+                current_chunk_sentences = [sent]
+                current_chunk_tokens = sent_tokens
+            else:
+                current_chunk_sentences.append(sent)
+                current_chunk_tokens += sent_tokens
+
+        # flush any remaining sentences in the paragraph
+        if current_chunk_sentences:
+            chunk_idx += 1
+            chunk_text = " ".join(current_chunk_sentences)
+            embedding_text = f"{heading}\n\n{chunk_text}".strip()
+            chunk = Chunk(
+                chunk_id=f"chunk-{chunk_idx}",
+                heading=heading,
+                source_name=source_name,
+                source_url=source_url,
+                paragraph_index=para_idx,
+                original_paragraph=chunk_text,
+                embedding_text=embedding_text,
+                document_name=document_name,
+            )
+            chunks.append(chunk)
 
     return chunks
 

@@ -4,7 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Iterable, List, ClassVar
+from typing import Dict, Iterable, List, ClassVar
 
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
@@ -105,7 +105,9 @@ class TranslationModel:
         inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=max_length)
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
         with torch.no_grad():
-            outputs = self.model.generate(**inputs, max_length=max_length, num_beams=4)
+            # Greedy decoding: for RAG quotation purposes beam search adds
+            # 3-4x latency on CPU with negligible quality difference.
+            outputs = self.model.generate(**inputs, max_length=max_length, num_beams=1)
         decoded = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         self._write_cached_translation(text, decoded)
         return decoded
@@ -115,32 +117,34 @@ class TranslationModel:
         if not items:
             return []
 
-        cached_results: List[str] = []
+        results: Dict[str, str] = {}
         uncached_items: List[str] = []
         for item in items:
             cached = self._read_cached_translation(item)
             if cached is not None:
-                cached_results.append(cached)
+                results[item] = cached
             else:
                 uncached_items.append(item)
 
         if uncached_items:
-            inputs = self.tokenizer(uncached_items, return_tensors="pt", padding=True, truncation=True, max_length=max_length)
-            inputs = {k: v.to(self.device) for k, v in inputs.items()}
-            with torch.no_grad():
-                outputs = self.model.generate(**inputs, max_length=max_length, num_beams=4)
-            decoded = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-            for item, translation in zip(uncached_items, decoded):
-                self._write_cached_translation(item, translation)
-                cached_results.append(translation)
+            batch_size = max(1, int(os.getenv("TRANSLATE_BATCH_SIZE", "12")))
+            # Length-sorting keeps every padded mini-batch as tight as possible:
+            # a single huge padded batch pads short texts up to the longest one,
+            # wasting most of the decoder compute on padding.
+            ordered_uncached = sorted(dict.fromkeys(uncached_items), key=len)
+            for start in range(0, len(ordered_uncached), batch_size):
+                batch = ordered_uncached[start : start + batch_size]
+                inputs = self.tokenizer(batch, return_tensors="pt", padding=True, truncation=True, max_length=max_length)
+                inputs = {k: v.to(self.device) for k, v in inputs.items()}
+                with torch.no_grad():
+                    outputs = self.model.generate(**inputs, max_length=max_length, num_beams=1)
+                decoded = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+                for item, translation in zip(batch, decoded):
+                    results[item] = translation
+                    self._write_cached_translation(item, translation)
 
-        # Reconstruct original order
-        ordered_results: List[str] = []
-        for item in items:
-            translated = self._read_cached_translation(item)
-            if translated is not None:
-                ordered_results.append(translated)
-        return ordered_results
+        # Reconstruct original order from memory (no per-item disk re-reads).
+        return [results.get(item, "") for item in items]
 
 
 def normalize_language_code(lang: str) -> str:

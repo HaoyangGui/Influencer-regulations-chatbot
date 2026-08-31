@@ -40,6 +40,9 @@ class VectorStore:
                 "translated_paragraph": chunk.translated_paragraph,
                 "embedding_text_en": chunk.embedding_text_en,
                 "source_language": chunk.source_language or "nl",
+                # Which individual PDF (or sub-document) within the source this
+                # chunk belongs to, enabling per-document filtering at query time.
+                "document_name": chunk.document_name or "",
                 # ChromaDB metadata cannot hold nested structures, so serialise the
                 # language->text map to JSON for later quotation look-up.
                 "translations": json.dumps(chunk.translations, ensure_ascii=False),

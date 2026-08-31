@@ -31,6 +31,9 @@ class AnswerRequest(BaseModel):
     top_k: int = 3
     max_tokens: int = 256
     preview_tokens: bool = False
+    # Optional per-document restriction: when set, retrieval only considers
+    # chunks from that individual document (e.g. one PDF of a multi-PDF source).
+    document_name: Optional[str] = None
 
 
 class EvidenceItem(BaseModel):
@@ -41,6 +44,7 @@ class EvidenceItem(BaseModel):
     heading: str
     source_name: str
     source_url: str
+    document_name: str = ""
     quotation: str
     language: str
     original_text: str
@@ -217,13 +221,15 @@ async def rebuild(req: RebuildRequest) -> RebuildResponse:
 
 @app.get("/reload-status")
 async def reload_status() -> Dict[str, Any]:
-    """Check if chunks.json exists."""
+    """Check if per-source processed chunk files exist."""
     project_root = Path(__file__).resolve().parent.parent
-    chunks_path = project_root / "data" / "processed" / "chunks.json"
-    
+    processed_dir = project_root / "data" / "processed"
+    chunks_files = sorted(processed_dir.glob("*_chunks.json")) if processed_dir.exists() else []
+    chunks_file = str(chunks_files[0]) if chunks_files else str(processed_dir / "chunks.json")
+
     return {
-        "chunks_file": str(chunks_path),
-        "file_exists": chunks_path.exists(),
+        "chunks_file": chunks_file,
+        "file_exists": bool(chunks_files),
         "mode": "direct_file_access",
     }
 
@@ -240,7 +246,9 @@ async def answer(req: AnswerRequest) -> AnswerResponse:
     # LLM prompt AND to return the RAG basis to the caller, so the answer and
     # its evidence always stay consistent (no re-retrieval or drift).
     retrieval_start = time.perf_counter()
-    results = await _run_blocking(RETRIEVER.retrieve, req.question, req.top_k)
+    results = await _run_blocking(
+        RETRIEVER.retrieve, req.question, req.top_k, req.document_name
+    )
     timings["retrieval"] = time.perf_counter() - retrieval_start
 
     # The LLM answer is generated from those exact retrieved chunks. ``answer()``
@@ -269,6 +277,7 @@ async def answer(req: AnswerRequest) -> AnswerResponse:
                 heading=r.heading,
                 source_name=r.source_name,
                 source_url=r.source_url,
+                document_name=r.document_name,
                 quotation=r.quotation,
                 language=r.quotation_language,
                 original_text=r.original_paragraph,
@@ -283,8 +292,14 @@ async def answer(req: AnswerRequest) -> AnswerResponse:
             results_serialized = []
             for idx, r in enumerate(used_results, start=1):
                 res_dict = asdict(r)
-                # Chip-provided defaults when metadata omits them.
-                res_dict.setdefault("processed_file", "data/processed/chunks.json")
+                # Chip-provided defaults when metadata omits them; the processed
+                # filename always carries the source's safe prefix.
+                from src.main import _safe_name_for_source
+                res_dict.setdefault(
+                    "processed_file",
+                    "data/processed/%s_chunks.json"
+                    % _safe_name_for_source(r.source_name or "", r.source_url or ""),
+                )
                 res_dict.setdefault("source_name", "De belangrijkste regels voor video-uploaders")
                 res_dict["rank"] = idx
                 results_serialized.append(res_dict)

@@ -21,6 +21,7 @@ class RetrievalResult:
     source_name: str
     source_url: str
     processed_file: str | None = None
+    document_name: str = ""
     quotation: str = ""
     quotation_language: str = ""
 
@@ -47,7 +48,12 @@ class Retriever:
         return normalize_language_code(lang)
 
     @staticmethod
-    def _select_quotation(metadata: Dict[str, Any], source_text: str, lang: str) -> tuple[str, str]:
+    def _select_quotation(
+        metadata: Dict[str, Any],
+        source_text: str,
+        lang: str,
+        translator: Optional[Any] = None,
+    ) -> tuple[str, str]:
         """Return the chunk text best aligned with the requested language.
 
         The preference order is data-driven and deliberately NOT tied to any
@@ -55,13 +61,21 @@ class Retriever:
         are used in the future):
           1. an exact translation for the detected user language (from the
              ``translations`` map), if present,
-          2. the authentic source-language original of this chunk,
-          3. legacy backward-compatibility: older persisted chunks stored only
-             an English text (``translated_paragraph`` / ``embedding_text_en``)
-             with no ``translations`` map. Those are used ONLY when the user
-             actually requested English, so other languages are never silently
-             forced into English,
-          4. otherwise the raw document text in its own (source) language.
+          2. for English requests when no stored English text exists: the
+             authentic source-language original,
+          3. otherwise the raw document text in its own (source) language.
+
+        Because startup no longer batch-translates chunks into English (the
+        embedding uses the multilingual original text instead), the English
+        quotation bridge is resolved lazily here for English requests, in this
+        order:
+          a. a stored ``translations["en"]`` entry (step 1 already covers it),
+          b. legacy backward-compatible persisted English text
+             (``translated_paragraph`` / ``embedding_text_en`` from older
+             builds), which costs nothing to reuse,
+          c. an on-demand translation via the optional ``translator`` argument,
+             which is disk-cached by ``TranslationModel`` so it is only paid
+             once per unique chunk text.
         Reports the language code of whatever text it actually returned.
         """
         lang_code = normalize_language_code(lang)
@@ -76,23 +90,34 @@ class Retriever:
                 translations = parsed if isinstance(parsed, dict) else None
             except Exception:
                 translations = None
-        if isinstance(translations, dict):
-            # 1. Exact translation in the user's language, whatever it is.
-            if translations.get(lang_code):
-                return translations[lang_code], lang_code
-            # 2. Authentic source-language original (kept as the primary basis
-            #    so the returned RAG evidence stays faithful to the document).
-            if source_lang and translations.get(source_lang):
-                return translations[source_lang], source_lang
+        translations_map = translations if isinstance(translations, dict) else {}
 
-        # 3. Backward-compatible with legacy persisted chunks that have no
-        #    ``translations`` map but do store English text. Only English
-        #    requests may use it (so a French/German/Chinese user still gets
-        #    the authentic source text instead of an English bridge).
+        # 1. Exact translation in the user's language, whatever it is.
+        if translations_map.get(lang_code):
+            return translations_map[lang_code], lang_code
+
         if lang_code == "en":
-            legacy_english = metadata.get("translated_paragraph") or metadata.get("embedding_text_en") or ""
-            if legacy_english and legacy_english.strip():
+            # 2a. Backward-compatible with legacy persisted chunks that store
+            #     English text outside the ``translations`` map.
+            legacy_english = (
+                metadata.get("translated_paragraph") or metadata.get("embedding_text_en") or ""
+            ).strip()
+            if legacy_english:
                 return legacy_english, "en"
+            # 2b. On-demand English bridge (lazily replaces the old startup
+            #     batch translation). Disk-cached, so repeated queries are free.
+            if translator is not None and source_lang != "en" and source_text.strip():
+                try:
+                    bridged = translator.translate(source_text)
+                except Exception:
+                    bridged = ""
+                if bridged and bridged.strip():
+                    return bridged, "en"
+
+        # 3. Authentic source-language original (kept as the primary basis
+        #    so the returned RAG evidence stays faithful to the document).
+        if source_lang and translations_map.get(source_lang):
+            return translations_map[source_lang], source_lang
 
         # 4. Last resort: the raw document text in its source language.
         return source_text, source_lang
@@ -104,17 +129,22 @@ class Retriever:
     def _compute_similarity(self, query_embedding: List[float], document_embeddings: List[List[float]]) -> List[float]:
         return [self._dot_product(query_embedding, doc_emb) for doc_emb in document_embeddings]
 
-    def retrieve(self, question: str, top_k: int = 5) -> List[RetrievalResult]:
+    def retrieve(self, question: str, top_k: int = 5, document_name: Optional[str] = None) -> List[RetrievalResult]:
         # Compute the query embedding in the user's own language (no forced
         # English translation) so retrieval/similarity follows the question's
         # language. The multilingual embedding model shares one vector space
         # with the stored chunk vectors.
         self.last_language = self._detect_language_code(detect_language(question))
         query_embedding = self.embedding_model.embed_text(question)
+        # Optional per-document filter: when a ``document_name`` is supplied,
+        # only chunks belonging to that individual document (e.g. one PDF of a
+        # multi-PDF source) are considered for retrieval.
+        where_filter = {"document_name": document_name} if document_name else None
         query_results: Dict[str, Any] = self.collection.query(
             query_embeddings=[query_embedding],
             n_results=top_k,
             include=["metadatas", "documents", "embeddings"],
+            **({"where": where_filter} if where_filter else {}),
         )
 
         metadatas = query_results.get("metadatas", [[]])[0]
@@ -128,7 +158,9 @@ class Retriever:
 
         results: List[RetrievalResult] = []
         for similarity, metadata, document_text in zip(similarities, metadatas, documents):
-            quotation, quotation_language = self._select_quotation(metadata, document_text, self.last_language)
+            quotation, quotation_language = self._select_quotation(
+                metadata, document_text, self.last_language, translator=self.translator
+            )
             results.append(
                 RetrievalResult(
                     similarity=similarity,
@@ -140,6 +172,7 @@ class Retriever:
                     source_name=metadata.get("source_name", ""),
                     source_url=metadata.get("source_url", ""),
                     processed_file=metadata.get("processed_file"),
+                    document_name=metadata.get("document_name") or "",
                     quotation=quotation,
                     quotation_language=quotation_language,
                 )
@@ -182,6 +215,7 @@ class Retriever:
             prompt_lines.extend([
                 f"Chunk {index} (chunk_id: {chunk.chunk_id}):",
                 f"Heading: {chunk.heading}",
+                *( [f"Document: {chunk.document_name}"] if chunk.document_name else [] ),
                 f"Source URL: {chunk.source_url}",
                 f"Text (in {language_name(quote_lang) or quote_lang}): {self._truncate_text(chunk.quotation, max_chunk_length)}",
                 f"Original text: {self._truncate_text(chunk.original_paragraph, max_chunk_length)}",

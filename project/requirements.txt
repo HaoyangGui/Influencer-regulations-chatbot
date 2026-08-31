@@ -23,6 +23,9 @@ nltk==3.10.3
 langdetect==1.0.9
 tiktoken==0.13.0
 
+# PDF text extraction (used by crawler.py when a source has "type": "pdf", via the Mistral OCR API)
+mistralai==2.9.4
+
 # Configuration
 python-dotenv==1.2.2
 

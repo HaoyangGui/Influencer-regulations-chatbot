@@ -1,6 +1,12 @@
 [
   {
     "url": "https://www.cvdm.nl/sector/video-uploaders/de-belangrijkste-regels-voor-video-uploaders/",
-    "source_name": "De belangrijkste regels voor video-uploaders"
+    "source_name": "De belangrijkste regels voor video-uploaders",
+    "type": "website"
+  },
+  {
+    "url": "Influencer legal hub",
+    "source_name": "Influencer Legal Hub",
+    "type": "pdf"
   }
 ]

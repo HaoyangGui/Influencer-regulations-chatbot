@@ -14,7 +14,8 @@ import json as _json
 
 
 class FakeCollection:
-    def query(self, query_embeddings: list[list[float]], n_results: int, include: list[str]) -> dict[str, Any]:
+    def query(self, query_embeddings: list[list[float]], n_results: int, include: list[str], **kwargs: Any) -> dict[str, Any]:
+        FakeCollection.last_kwargs = kwargs
         return {
             "metadatas": [[{"chunk_id": "chunk-1", "heading": "Test heading", "paragraph_index": 1, "source_name": "test", "source_url": "https://example.com"}]],
             "documents": [["Original paragraph text."]],
@@ -50,6 +51,36 @@ def test_retriever_returns_parsed_results(monkeypatch: Any) -> None:
     assert result.paragraph_index == 1
     assert result.original_paragraph == "Original paragraph text."
     assert abs(result.similarity - 0.01) < 1e-6
+
+
+def _make_retriever(monkeypatch: Any) -> Retriever:
+    fake_embedding_model = MagicMock()
+    fake_embedding_model.embed_text.return_value = [0.1, 0.0, 0.0]
+
+    fake_vector_store = MagicMock()
+    fake_vector_store.get_collection.return_value = FakeCollection()
+
+    monkeypatch.setattr("src.retriever.EmbeddingModel", lambda: fake_embedding_model)
+    monkeypatch.setattr("src.retriever.VectorStore", lambda *args, **kwargs: fake_vector_store)
+    monkeypatch.setattr("src.retriever.TranslationModel", lambda: MagicMock())
+    monkeypatch.setattr("src.retriever.LLMClient", lambda: MagicMock())
+    return Retriever(vector_dir=Path("vector_db"))
+
+
+def test_retrieve_without_document_filter_sends_no_where(monkeypatch: Any) -> None:
+    FakeCollection.last_kwargs = {}
+    retriever = _make_retriever(monkeypatch)
+    retriever.retrieve("Question?", top_k=1)
+    assert "where" not in FakeCollection.last_kwargs
+
+
+def test_retrieve_with_document_filter_filters_by_document_name(monkeypatch: Any) -> None:
+    """The RAG system can restrict retrieval to one individual document."""
+    FakeCollection.last_kwargs = {}
+    retriever = _make_retriever(monkeypatch)
+    results = retriever.retrieve("Question?", top_k=1, document_name="Legal brief 2")
+    assert FakeCollection.last_kwargs == {"where": {"document_name": "Legal brief 2"}}
+    assert len(results) == 1
 
 
 def test_retriever_answer_uses_llm(monkeypatch: Any) -> None:

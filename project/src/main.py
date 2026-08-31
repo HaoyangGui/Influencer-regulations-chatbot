@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -16,7 +17,11 @@ from dotenv import load_dotenv
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.chunker import chunk_document, save_chunks_to_json
-from src.crawler import download_and_save_markdown
+from src.crawler import (
+    download_and_save_markdown,
+    iter_local_pdfs,
+    ocr_pdfs_to_sections,
+)
 from src.vectorstore import VectorStore
 
 # Heavy modules (transformers, sentence_transformers, torch) are imported later to avoid long startup delays
@@ -37,7 +42,7 @@ def _source_state_path(project_root: Path) -> Path:
 
 
 def _default_sources() -> List[Dict[str, str]]:
-    return [{"url": URL, "source_name": SOURCE_NAME}]
+    return [{"url": URL, "source_name": SOURCE_NAME, "type": "website"}]
 
 
 def _load_sources(project_root: Path) -> List[Dict[str, str]]:
@@ -52,10 +57,12 @@ def _load_sources(project_root: Path) -> List[Dict[str, str]]:
                     if isinstance(item, dict):
                         url = str(item.get("url", "")).strip()
                         if url:
+                            source_type = str(item.get("type") or "website").strip().lower()
                             normalized.append(
                                 {
                                     "url": url,
                                     "source_name": str(item.get("source_name") or item.get("title") or "Unknown source"),
+                                    "type": source_type if source_type in {"website", "pdf"} else "website",
                                 }
                             )
                 if normalized:
@@ -124,6 +131,67 @@ def _source_cache_paths(project_root: Path, source_url: str, source_name: str | 
     return cache_dir / raw_name, cache_dir / chunks_name
 
 
+def _safe_file_stem(stem: str) -> str:
+    """Sanitize a PDF stem so it can be used as a markdown filename."""
+    cleaned = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", stem).strip()
+    return cleaned or "document"
+
+
+def _per_document_basename(source_name: str, source_url: str, document_stem: str) -> str:
+    """Filesystem-safe, source-prefixed basename for a per-document (per-PDF) file.
+
+    Prefixes a document stem with the source's safe name so every cached and
+    mirrored raw/chunk file immediately shows which source it belongs to, e.g.
+    ``Influencer_Legal_Hub_Legal brief 1``. Callers append a ``.md`` or
+    ``_chunks.json`` extension.
+    """
+    return f"{_safe_name_for_source(source_name, source_url)}_{_safe_file_stem(document_stem)}"
+
+
+def _with_source_prefix(safe_src: str, name: str) -> str:
+    """Prefix ``name`` with the source safe name unless already prefixed.
+
+    Helps migrate legacy cache/mirror files (named only by document, e.g.
+    ``Legal brief 1.md``) to source-prefixed names without doubling the prefix
+    for newly built files that already carry it.
+    """
+    if name.startswith(f"{safe_src}_"):
+        return name
+    return f"{safe_src}_{name}"
+
+
+def _resolve_pdf_source_dir(project_root: Path, source: Dict[str, str]) -> Path:
+    """Locate the local folder holding the PDFs for a ``"type": "pdf"`` source.
+
+    The PDFs are NOT downloaded from the web anymore: they live under the
+    The PDFs are NOT downloaded from the web anymore: they live under the
+    project's ``data/pdf`` directory. Resolution order:
+      1. A relative sub-folder name in ``source["url"]`` matched under ``data/pdf``.
+      2. ``data/pdf/<source_name>`` (case-insensitive folder match).
+      3. ``data/pdf`` itself (all local PDFs recursively).
+    """
+    pdf_root = project_root / "data" / "pdf"
+    url = str(source.get("url", "") or "").strip()
+    source_name = str(source.get("source_name") or source.get("title") or "").strip()
+
+    # 1) The url may already point at a local sub-folder under data/pdf.
+    if url and not url.startswith(("http://", "https://")):
+        folder = Path(url.replace("\\", "/"))
+        if not folder.is_absolute():
+            folder = pdf_root / folder
+        if folder.is_dir():
+            return folder
+
+    # 2) A folder whose name matches the source name (case-insensitive).
+    if source_name:
+        for child in (pdf_root.iterdir() if pdf_root.is_dir() else []):
+            if child.is_dir() and child.name.lower() == source_name.lower():
+                return child
+
+    # 3) Fallback: the whole data/pdf tree.
+    return pdf_root
+
+
 def _make_chunk_id(source_url: str, paragraph_index: int) -> str:
     source_hash = hashlib.sha256(source_url.encode("utf-8")).hexdigest()[:12]
     return f"{source_hash}-chunk-{paragraph_index}"
@@ -140,21 +208,70 @@ def build_vector_database(
     chunk_max_tokens: int = 800,
     vector_store: VectorStore | None = None,
     project_root: Path | None = None,
+    source_type: str = "website",
 ) -> None:
-    print(f"Downloading and cleaning webpage: {source_url}")
+    print(f"Processing source: {source_url} (type={source_type})")
     start = time.perf_counter()
-    download_and_save_markdown(source_url, raw_path)
-    print(f"Download finished in {time.perf_counter() - start:.2f}s")
+    if source_type == "pdf":
+        # PDF sources are read from the local data/pdf folder (no downloading).
+        project_root = project_root or Path(__file__).resolve().parent.parent
+        pdf_dir = _resolve_pdf_source_dir(project_root, {"url": source_url, "source_name": source_name})
+        pdf_paths = iter_local_pdfs(pdf_dir)
+        if not pdf_paths:
+            print(f"Warning: no local PDFs found under {pdf_dir}; skipping {source_url}.")
+            return
+        print(f"OCR {len(pdf_paths)} PDF(s) from {pdf_dir}...")
+        per_pdf_sections = ocr_pdfs_to_sections(pdf_paths)
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+        # Each PDF is saved to its own markdown file next to the combined
+        # source-level raw file, so data/raw can mirror one .md per PDF.
+        combined_parts: List[str] = []
+        for stem, cleaned in per_pdf_sections:
+            per_pdf_path = raw_path.parent / f"{_per_document_basename(source_name, source_url, stem)}.md"
+            per_pdf_path.write_text(cleaned, encoding="utf-8")
+            combined_parts.append(f"# {stem}\n\n{cleaned}")
+        raw_path.write_text("\n\n".join(combined_parts).strip(), encoding="utf-8")
+    else:
+        per_pdf_sections = None
+        download_and_save_markdown(source_url, raw_path)
+    print(f"Source ready in {time.perf_counter() - start:.2f}s")
 
     markdown_text = raw_path.read_text(encoding="utf-8")
     print("Chunking document...")
     start = time.perf_counter()
-    chunks = chunk_document(
-        markdown_text,
-        source_name=source_name,
-        source_url=source_url,
-        max_tokens=chunk_max_tokens,
-    )
+    if per_pdf_sections is not None and source_type == "pdf":
+        # Chunk each PDF separately so that every PDF becomes its own
+        # processed chunk set: each chunk records which PDF it came from via
+        # ``document_name`` and a per-PDF chunk JSON file is stored next to
+        # its per-PDF raw markdown, letting the RAG system query any single
+        # document individually.
+        chunks: List = []
+        for stem, cleaned in per_pdf_sections:
+            safe_stem = _safe_file_stem(stem)
+            doc_chunks = chunk_document(
+                cleaned,
+                source_name=source_name,
+                source_url=source_url,
+                max_tokens=chunk_max_tokens,
+                document_name=stem,
+            )
+            # Make chunk ids unique across PDFs within this source (the
+            # generic source-hash prefix below would otherwise collide).
+            doc_tag = re.sub(r"[^A-Za-z0-9_-]+", "-", safe_stem).strip("-").lower() or "doc"
+            for doc_chunk in doc_chunks:
+                doc_chunk.chunk_id = f"{doc_tag}-{doc_chunk.chunk_id}"
+            chunks.extend(doc_chunks)
+            save_chunks_to_json(
+                doc_chunks,
+                raw_path.parent / f"{_per_document_basename(source_name, source_url, stem)}_chunks.json",
+            )
+    else:
+        chunks = chunk_document(
+            markdown_text,
+            source_name=source_name,
+            source_url=source_url,
+            max_tokens=chunk_max_tokens,
+        )
     # Ensure chunk ids are unique across sources by prefixing with a short source hash
     source_hash = hashlib.sha256(source_url.encode("utf-8")).hexdigest()[:12]
     for chunk in chunks:
@@ -162,23 +279,25 @@ def build_vector_database(
     save_chunks_to_json(chunks, chunks_path)
     print(f"Chunking finished in {time.perf_counter() - start:.2f}s")
 
-    print("Translating chunks to English for embeddings...")
+    print("Filling chunk language metadata (English translations are generated lazily at query time)...")
     start = time.perf_counter()
-    from src.translator import TranslationModel, detect_language
+    from src.translator import detect_language
 
-    translator = translator or TranslationModel()
-    english_texts = translator.translate_batch([chunk.embedding_text for chunk in chunks])
-    translated_paragraphs = translator.translate_batch([chunk.original_paragraph for chunk in chunks])
-    # Detect the source document language from its raw markdown, so quotations can
-    # be returned in the right language for any query (not hardcoded to nl/en).
-    source_lang = detect_language(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else "nl"
-    for chunk, english_text, translated_paragraph in zip(chunks, english_texts, translated_paragraphs):
-        chunk.embedding_text_en = english_text
-        chunk.translated_paragraph = translated_paragraph
+    # Embeddings are computed on the ORIGINAL text (multilingual model), so no
+    # translation is required for retrieval. Startup therefore only records the
+    # source language; any English quotation bridge is translated lazily on
+    # demand by the retriever (cached on disk), removing the slowest startup
+    # step entirely.
+    source_lang = detect_language(markdown_text) if markdown_text else "nl"
+    for chunk in chunks:
         chunk.source_language = source_lang
         chunk.translations[source_lang] = chunk.original_paragraph
-        chunk.translations["en"] = translated_paragraph
-    print(f"Translation finished in {time.perf_counter() - start:.2f}s")
+        if source_lang == "en":
+            # Source already English: nothing to translate.
+            chunk.translated_paragraph = chunk.original_paragraph
+            chunk.embedding_text_en = chunk.embedding_text
+            chunk.translations["en"] = chunk.original_paragraph
+    print(f"Language metadata finished in {time.perf_counter() - start:.2f}s")
 
     print("Generating embeddings...")
     start = time.perf_counter()
@@ -219,6 +338,72 @@ def build_vector_database(
     print(f"Vector database build complete for {source_name}.")
 
 
+def _mirror_source_chunks(processed_dir: Path, safe: str, chunks_path: Path) -> None:
+    """Mirror a source's chunk JSON files into ``data/processed`` with source-prefixed names.
+
+    Writes the source-level aggregate as ``<safe>_chunks.json`` (named exactly
+    like the cache file in ``data/cache/sources``) and mirrors any per-document
+    sibling files as ``<safe>_<document>_chunks.json``, so every processed chunk
+    file visibly maps back to its source.
+    """
+    import shutil
+
+    if not chunks_path.exists():
+        return
+    try:
+        shutil.copy2(chunks_path, processed_dir / f"{safe}_chunks.json")
+        # PDF sources keep one chunk JSON per PDF next to the combined
+        # source-level chunks file; mirror each individually so data/processed
+        # holds one *_chunks.json per document. Website sources have no sibling
+        # chunk files, so this is a no-op.
+        for extra in sorted(chunks_path.parent.glob("*_chunks.json")):
+            if extra.resolve() == chunks_path.resolve():
+                continue
+            shutil.copy2(extra, processed_dir / _with_source_prefix(safe, extra.name))
+    except Exception as exc:
+        print(f"Warning: could not sync {chunks_path}: {exc}")
+
+
+def _sync_raw_and_processed(project_root: Path) -> None:
+    """Mirror the built raw markdown and per-source chunks to data/raw + data/processed.
+
+    This keeps the human-readable raw markdown and the source-prefixed chunk
+    JSON in the conventional ``data/raw`` / ``data/processed`` locations (each
+    named after its source, mirroring the authoritative ``data/cache/sources``
+    files), even when sources were built directly (pdf OCR or website crawl)
+    rather than through the server's cache-sync path.
+    """
+    import shutil
+
+    state = _load_source_state(project_root)
+    raw_dir = project_root / "data" / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    processed_dir = project_root / "data" / "processed"
+    processed_dir.mkdir(parents=True, exist_ok=True)
+
+    for source_url, entry in state.items():
+        raw_path = Path(entry.get("raw_path") or "")
+        chunks_path = Path(entry.get("chunks_path") or "")
+        safe = _safe_name_for_source(entry.get("source_name") or source_url, source_url)
+        if raw_path.exists():
+            try:
+                # PDF sources keep one markdown file per PDF next to the
+                # combined source-level raw file; mirror each individually so
+                # data/raw holds one .md per PDF. Website sources fall back to
+                # the single source-level markdown.
+                per_pdf_files = sorted(
+                    p for p in raw_path.parent.glob("*.md") if p.resolve() != raw_path.resolve()
+                )
+                if per_pdf_files:
+                    for pdf_md in per_pdf_files:
+                        shutil.copy2(pdf_md, raw_dir / _with_source_prefix(safe, pdf_md.name))
+                else:
+                    shutil.copy2(raw_path, raw_dir / f"{safe}.md")
+            except Exception as exc:
+                print(f"Warning: could not mirror {raw_path}: {exc}")
+        _mirror_source_chunks(processed_dir, safe, chunks_path)
+
+
 def process_sources(
     project_root: Path,
     sources: List[Dict[str, str]],
@@ -240,6 +425,7 @@ def process_sources(
         if not source_url:
             continue
         source_name = str(source.get("source_name") or source.get("title") or "Unknown source")
+        source_type = str(source.get("type") or "website").strip().lower()
         if not rebuild and source_url in processed_state:
             print(f"Skipping already processed source: {source_url}")
             continue
@@ -248,12 +434,14 @@ def process_sources(
         build_vector_database(
             source_url=source_url,
             source_name=source_name,
+            source_type=source_type,
             raw_path=raw_path,
             chunks_path=chunks_path,
             vector_dir=vector_dir,
             translator=translator,
             embedding_model=embedding_model,
             chunk_max_tokens=chunk_max_tokens,
+            project_root=project_root,
         )
         processed_state[source_url] = {
             "source_name": source_name,
@@ -262,6 +450,7 @@ def process_sources(
         }
 
     _write_source_state(project_root, processed_state)
+    _sync_raw_and_processed(project_root)
     return processed_state
 
 
