@@ -43,18 +43,7 @@ class TranslationModel:
         TranslationModel._shared_tokenizer = tokenizer
         TranslationModel._device = device
 
-    def ensure_local_cache(self) -> None:
-        auth_token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
-        if auth_token:
-            os.environ.setdefault("HUGGINGFACE_HUB_TOKEN", auth_token)
-        try:
-            AutoTokenizer.from_pretrained(self.model_name, local_files_only=True)
-            AutoModelForSeq2SeqLM.from_pretrained(self.model_name, local_files_only=True)
-            print("Translation model is already cached locally.")
-        except Exception:
-            print("Downloading translation model to local cache...")
-            AutoTokenizer.from_pretrained(self.model_name, local_files_only=False)
-            AutoModelForSeq2SeqLM.from_pretrained(self.model_name, local_files_only=False)
+
 
     def _from_pretrained_local_first(self, cls, model_name: str, **kwargs):
         if "use_auth_token" in kwargs:

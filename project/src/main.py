@@ -8,7 +8,8 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Dict, List
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 
@@ -105,9 +106,6 @@ def _source_cache_dir(project_root: Path, source_url: str) -> Path:
 
 def _safe_name_for_source(source_name: str, source_url: str) -> str:
     # Create a filesystem-safe name for the source using the provided source_name or fallback to hostname
-    import re
-    from urllib.parse import urlparse
-
     name = (source_name or '').strip()
     if not name:
         try:
@@ -164,7 +162,6 @@ def _resolve_pdf_source_dir(project_root: Path, source: Dict[str, str]) -> Path:
     """Locate the local folder holding the PDFs for a ``"type": "pdf"`` source.
 
     The PDFs are NOT downloaded from the web anymore: they live under the
-    The PDFs are NOT downloaded from the web anymore: they live under the
     project's ``data/pdf`` directory. Resolution order:
       1. A relative sub-folder name in ``source["url"]`` matched under ``data/pdf``.
       2. ``data/pdf/<source_name>`` (case-insensitive folder match).
@@ -190,11 +187,6 @@ def _resolve_pdf_source_dir(project_root: Path, source: Dict[str, str]) -> Path:
 
     # 3) Fallback: the whole data/pdf tree.
     return pdf_root
-
-
-def _make_chunk_id(source_url: str, paragraph_index: int) -> str:
-    source_hash = hashlib.sha256(source_url.encode("utf-8")).hexdigest()[:12]
-    return f"{source_hash}-chunk-{paragraph_index}"
 
 
 def build_vector_database(
@@ -454,42 +446,6 @@ def process_sources(
     return processed_state
 
 
-def print_retrieval_results(results: List[RetrievalResult]) -> None:
-    if not results:
-        print("No relevant chunks found.")
-        return
-
-    for index, result in enumerate(results, start=1):
-        print("-" * 80)
-        print(f"Rank {index}")
-        print(f"Similarity score: {result.similarity:.4f}")
-        print(f"Chunk ID: {result.chunk_id}")
-        print(f"Heading: {result.heading}")
-        print(f"Paragraph index: {result.paragraph_index}")
-        print(f"Source: {result.source_name}")
-        print(f"URL: {result.source_url}")
-        print("Original paragraph:")
-        print(result.original_paragraph)
-        if result.translated_paragraph:
-            print("English translation:")
-            print(result.translated_paragraph)
-    print("-" * 80)
-
-
-def _estimate_tokens(text: str, model_name: str) -> int:
-    """Estimate token count for text. Prefer tiktoken when available, otherwise fallback to a char-based heuristic."""
-    try:
-        import tiktoken
-
-        try:
-            enc = tiktoken.encoding_for_model(model_name)
-        except Exception:
-            enc = tiktoken.get_encoding("cl100k_base")
-        return len(enc.encode(text))
-    except Exception:
-        return max(1, len(text) // 4)
-
-
 def _configure_hf_environment(project_root: Path) -> None:
     cache_root = project_root / "data" / "cache" / "hf"
     cache_root.mkdir(parents=True, exist_ok=True)
@@ -503,26 +459,9 @@ def _configure_hf_environment(project_root: Path) -> None:
         os.environ["HUGGINGFACE_HUB_TOKEN"] = os.getenv("HF_TOKEN")
 
 
-def _ensure_model_cache(translator: TranslationModel, embedding_model: EmbeddingModel) -> None:
-    print("Ensuring local cache for translation and embedding models...")
-    translator.ensure_local_cache()
-    embedding_model.ensure_local_cache()
-    print("Local model cache ready.")
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build and query a simple RAG retrieval pipeline.")
-    parser.add_argument("--rebuild", action="store_true", help="Rebuild the vector database from the source pages listed in data/sources.json.")
-    parser.add_argument(
-        "--preview-tokens",
-        action="store_true",
-        help=(
-            "Estimate input/output token usage for the LLM request and ask for user confirmation before sending. "
-            "If enabled, shows estimated input tokens for the prompt and the requested max output tokens."
-        ),
-    )
-    parser.add_argument("--max-tokens", type=int, default=256, help="Max tokens to request from the LLM (used for token preview and request).")
-    parser.add_argument("--chunk-max-tokens", type=int, default=800, help="Target maximum tokens per chunk when splitting source content.")
+    parser.add_argument("--max-tokens", type=int, default=256, help="Max tokens to request from the LLM.")
     args = parser.parse_args()
 
     project_root = Path(__file__).resolve().parent.parent
@@ -555,10 +494,6 @@ def main() -> None:
         print("Please start the server: python project\\src\\server.py or python -m uvicorn src.server:app --port 8000")
         return
 
-    if args.rebuild:
-        print("Rebuild requested — this must be performed on the server. Start the server and call its rebuild endpoint if available.")
-        print("(Server-side rebuild endpoint not implemented in this version.)")
-
     try:
         question = input("Ask a question about Dutch influencer marketing regulations: ").strip()
     except EOFError:
@@ -569,7 +504,7 @@ def main() -> None:
         print("No question entered. Exiting.")
         return
 
-    payload = {"question": question, "top_k": 3, "max_tokens": args.max_tokens, "preview_tokens": args.preview_tokens}
+    payload = {"question": question, "top_k": 3, "max_tokens": args.max_tokens}
 
     import requests
 

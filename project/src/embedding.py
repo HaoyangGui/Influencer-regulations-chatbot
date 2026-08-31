@@ -46,19 +46,7 @@ class EmbeddingModel:
         except Exception:
             return SentenceTransformer(model_name, device=device)
 
-    def ensure_local_cache(self) -> None:
-        auth_token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
-        if auth_token:
-            os.environ.setdefault("HUGGINGFACE_HUB_TOKEN", auth_token)
-        try:
-            SentenceTransformer(self.model_name, device=self.device or ("cuda" if torch.cuda.is_available() else "cpu"), local_files_only=True)
-            print("Embedding model is already cached locally.")
-        except Exception:
-            print("Downloading embedding model to local cache...")
-            try:
-                SentenceTransformer(self.model_name, device=self.device or ("cuda" if torch.cuda.is_available() else "cpu"), local_files_only=False)
-            except TypeError:
-                SentenceTransformer(self.model_name, device=self.device or ("cuda" if torch.cuda.is_available() else "cpu"))
+
 
     def _cache_path_for_text(self, text: str) -> Path:
         cache_key = {

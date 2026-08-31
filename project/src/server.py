@@ -30,7 +30,6 @@ class AnswerRequest(BaseModel):
     question: str
     top_k: int = 3
     max_tokens: int = 256
-    preview_tokens: bool = False
     # Optional per-document restriction: when set, retrieval only considers
     # chunks from that individual document (e.g. one PDF of a multi-PDF source).
     document_name: Optional[str] = None
@@ -137,8 +136,6 @@ async def lifespan(app: FastAPI):
     logs_dir = project_root / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
     (logs_dir / "server_startup_timings.json").write_text(json.dumps(timings, indent=2), encoding="utf-8")
-
-    app.state.timings = timings
 
     try:
         yield
@@ -289,18 +286,17 @@ async def answer(req: AnswerRequest) -> AnswerResponse:
     results_serialized = None
     try:
         if used_results:
+            from src.main import _safe_name_for_source
+
             results_serialized = []
             for idx, r in enumerate(used_results, start=1):
                 res_dict = asdict(r)
-                # Chip-provided defaults when metadata omits them; the processed
-                # filename always carries the source's safe prefix.
-                from src.main import _safe_name_for_source
+                # The processed filename always carries the source's safe prefix.
                 res_dict.setdefault(
                     "processed_file",
                     "data/processed/%s_chunks.json"
                     % _safe_name_for_source(r.source_name or "", r.source_url or ""),
                 )
-                res_dict.setdefault("source_name", "De belangrijkste regels voor video-uploaders")
                 res_dict["rank"] = idx
                 results_serialized.append(res_dict)
     except Exception as exc:

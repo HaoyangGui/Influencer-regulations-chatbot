@@ -10,7 +10,6 @@ so that the vector database, chunks and downstream caches stay up to date.
 from __future__ import annotations
 
 import hashlib
-import json
 import time
 from pathlib import Path
 from typing import List, Optional
@@ -175,20 +174,6 @@ def rebuild_source(
         "updated_at": time.time(),
     }
     _write_source_state(project_root, state)
-
-    # Remove legacy generic-named cache files (raw.md / chunks.json) that do not
-    # identify their source, so the source's cache dir holds only source-prefixed
-    # names after the rebuild.
-    for legacy in (raw_path.parent / "raw.md", raw_path.parent / "chunks.json"):
-        try:
-            if (
-                legacy.exists()
-                and legacy != raw_path
-                and legacy != chunks_path
-            ):
-                legacy.unlink()
-        except Exception:
-            pass
 
 
 def _update_processed_chunks(project_root: Path) -> None:

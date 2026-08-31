@@ -4,7 +4,7 @@ import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 
 @dataclass
@@ -32,17 +32,6 @@ class Chunk:
 
     def to_dict(self) -> dict:
         return asdict(self)
-
-    @staticmethod
-    def from_dict(data: dict) -> "Chunk":
-        return Chunk(**data)
-
-
-def _normalize_text(text: str) -> str:
-    # Collapse multiple whitespace, preserve newlines where paragraphs were
-    text = re.sub(r"[ \t\xa0]+", " ", text)
-    text = re.sub(r"\s*\n\s*", "\n", text)
-    return text.strip()
 
 
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
@@ -226,9 +215,3 @@ def save_chunks_to_json(chunks: List[Chunk], output_path: Path) -> Path:
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump([chunk.to_dict() for chunk in chunks], handle, indent=2, ensure_ascii=False)
     return output_path
-
-
-def load_chunks_from_json(input_path: Path) -> List[Chunk]:
-    with input_path.open("r", encoding="utf-8") as handle:
-        data = json.load(handle)
-    return [Chunk.from_dict(item) for item in data]
