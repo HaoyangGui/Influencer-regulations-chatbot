@@ -1,0 +1,369 @@
+[
+  {
+    "id": "C01",
+    "category": "C. Advertising and Commercial Disclosure",
+    "difficulty": "easy",
+    "question_type": "fact_retrieval",
+    "question": "When does influencer content constitute advertising under EU consumer law?",
+    "gold_answer": {
+      "summary": "Commercial content must be clearly marked as advertising when there is a commercial relationship between the influencer and brand.",
+      "key_points": [
+        "Commercial relationships must be disclosed",
+        "Disclosure must be clear and unambiguous",
+        "Disclosure must be immediately obvious to consumers"
+      ],
+      "legal_caution": "Ambiguous or unclear disclosures may not satisfy legal requirements",
+      "decision": "yes"
+    },
+    "gold_quotations": [
+      {
+        "quote_id": "Q1",
+        "quote": "Commercial content must be clearly marked as advertising. Influencers have an obligation to disclose when they have a commercial relationship with a brand.",
+        "document": "Legal brief 1.pdf",
+        "section": null,
+        "page": null,
+        "chunk_id": "chunk_adv_001",
+        "supports": [
+          "Commercial content requires disclosure"
+        ],
+        "quotation_quality": "direct_support"
+      }
+    ],
+    "claim_evidence_mapping": [
+      {
+        "claim": "Commercial content requires disclosure",
+        "supporting_quote_ids": [
+          "Q1"
+        ]
+      }
+    ],
+    "gold_sources": [
+      {
+        "document": "Legal brief 1.pdf",
+        "chunk_id": "chunk_adv_001"
+      }
+    ],
+    "requires_multi_hop": false,
+    "unanswerable": false,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "D01",
+    "category": "D. Content Monetisation",
+    "difficulty": "easy",
+    "question_type": "conceptual",
+    "question": "Do free products from brands constitute consideration under consumer law?",
+    "gold_answer": {
+      "summary": "Yes, free products can constitute consideration and may trigger disclosure obligations.",
+      "key_points": [
+        "Free products can be valuable consideration",
+        "This may create a commercial relationship",
+        "Disclosure obligations may apply"
+      ],
+      "legal_caution": "Consider all forms of consideration, not just cash payments",
+      "decision": "yes"
+    },
+    "gold_quotations": [
+      {
+        "quote_id": "Q2",
+        "quote": "Free products, samples, or services received by an influencer can constitute consideration under consumer protection law.",
+        "document": "Legal brief 2.pdf",
+        "section": null,
+        "page": null,
+        "chunk_id": "chunk_free_001",
+        "supports": [
+          "Free products as consideration"
+        ],
+        "quotation_quality": "direct_support"
+      }
+    ],
+    "claim_evidence_mapping": [
+      {
+        "claim": "Free products constitute consideration",
+        "supporting_quote_ids": [
+          "Q2"
+        ]
+      }
+    ],
+    "gold_sources": [
+      {
+        "document": "Legal brief 2.pdf",
+        "chunk_id": "chunk_free_001"
+      }
+    ],
+    "requires_multi_hop": false,
+    "unanswerable": false,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "B01",
+    "category": "B. Trader Status",
+    "difficulty": "medium",
+    "question_type": "scenario_application",
+    "question": "I have 30,000 followers but am not registered as a business. I occasionally receive free products. Could I still be considered a trader?",
+    "gold_answer": {
+      "summary": "Trader status depends on the nature and frequency of commercial activity, not just business registration.",
+      "key_points": [
+        "Regular commercial activity can establish trader status",
+        "Business registration is not the determining factor",
+        "Frequency and nature of activity matter"
+      ],
+      "legal_caution": "Analyze all circumstances, not just formal registration status",
+      "decision": "depends"
+    },
+    "gold_quotations": [
+      {
+        "quote_id": "Q3",
+        "quote": "An influencer may be considered a trader based on the frequency, nature, and circumstances of their commercial activities, not solely on formal business registration.",
+        "document": "Legal brief 3.pdf",
+        "section": null,
+        "page": null,
+        "chunk_id": "chunk_trader_001",
+        "supports": [
+          "Trader status determination"
+        ],
+        "quotation_quality": "direct_support"
+      }
+    ],
+    "claim_evidence_mapping": [
+      {
+        "claim": "Trader status depends on commercial activity",
+        "supporting_quote_ids": [
+          "Q3"
+        ]
+      }
+    ],
+    "gold_sources": [
+      {
+        "document": "Legal brief 3.pdf",
+        "chunk_id": "chunk_trader_001"
+      }
+    ],
+    "requires_multi_hop": false,
+    "unanswerable": false,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "G01",
+    "category": "G. Intellectual Property",
+    "difficulty": "medium",
+    "question_type": "scenario_application",
+    "question": "An influencer downloads a professional photographer's image from Instagram and uses it to promote a brand. What legal issue may arise?",
+    "gold_answer": {
+      "summary": "Unauthorized use of copyrighted images violates copyright law, even if they are publicly available online.",
+      "key_points": [
+        "Copyright protections apply to all creative works",
+        "Public availability does not grant usage rights",
+        "Permission is required for commercial use",
+        "Liability can be significant"
+      ],
+      "legal_caution": "Assume copyright protection for all creative content",
+      "decision": "yes"
+    },
+    "gold_quotations": [
+      {
+        "quote_id": "Q4",
+        "quote": "Influencers must ensure they have appropriate rights or permissions to use third-party content including photographs, music, and designs. Unauthorized use of copyrighted material can expose influencers to liability.",
+        "document": "Legal brief 4.pdf",
+        "section": null,
+        "page": null,
+        "chunk_id": "chunk_copyright_001",
+        "supports": [
+          "Copyright requirements",
+          "Permission necessity"
+        ],
+        "quotation_quality": "direct_support"
+      }
+    ],
+    "claim_evidence_mapping": [
+      {
+        "claim": "Copyright protection applies to all creative works",
+        "supporting_quote_ids": [
+          "Q4"
+        ]
+      }
+    ],
+    "gold_sources": [
+      {
+        "document": "Legal brief 4.pdf",
+        "chunk_id": "chunk_copyright_001"
+      }
+    ],
+    "requires_multi_hop": false,
+    "unanswerable": false,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "E01",
+    "category": "E. Influencers as Sellers",
+    "difficulty": "medium",
+    "question_type": "scenario_application",
+    "question": "An influencer sells clothing directly through their website but provides only an Instagram username as contact information. What consumer-law issue could arise?",
+    "gold_answer": {
+      "summary": "Missing proper seller information violates consumer protection requirements.",
+      "key_points": [
+        "Sellers must provide verifiable business information",
+        "An Instagram username is insufficient",
+        "Physical address and proper contact details are required",
+        "This affects consumer remedies and complaints"
+      ],
+      "legal_caution": "All seller information requirements must be met",
+      "decision": "yes"
+    },
+    "gold_quotations": [
+      {
+        "quote_id": "Q5",
+        "quote": "When influencers directly sell products to consumers, they must provide required seller information including a verifiable business name, address, and contact details.",
+        "document": "Legal brief 5.pdf",
+        "section": null,
+        "page": null,
+        "chunk_id": "chunk_seller_001",
+        "supports": [
+          "Seller information requirements"
+        ],
+        "quotation_quality": "direct_support"
+      }
+    ],
+    "claim_evidence_mapping": [
+      {
+        "claim": "Proper seller information is required",
+        "supporting_quote_ids": [
+          "Q5"
+        ]
+      }
+    ],
+    "gold_sources": [
+      {
+        "document": "Legal brief 5.pdf",
+        "chunk_id": "chunk_seller_001"
+      }
+    ],
+    "requires_multi_hop": false,
+    "unanswerable": false,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "UN01",
+    "category": "Unanswerable / Insufficient-Evidence Questions",
+    "difficulty": "hard",
+    "question_type": "unanswerable",
+    "question": "What is the exact maximum fine an influencer can receive in Germany for failing to disclose an advertisement?",
+    "gold_answer": {
+      "summary": "This question cannot be answered with the available sources.",
+      "key_points": [
+        "The required information is not contained in the corpus",
+        "Jurisdiction-specific details are not available"
+      ],
+      "legal_caution": "Do not hallucinate information beyond the corpus",
+      "decision": "insufficient_information"
+    },
+    "gold_quotations": [],
+    "claim_evidence_mapping": [],
+    "gold_sources": [],
+    "requires_multi_hop": false,
+    "unanswerable": true,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "UN02",
+    "category": "Unanswerable / Insufficient-Evidence Questions",
+    "difficulty": "hard",
+    "question_type": "unanswerable",
+    "question": "What tax must an influencer pay in the Netherlands when receiving free products?",
+    "gold_answer": {
+      "summary": "This question cannot be answered with the available sources.",
+      "key_points": [
+        "The required information is not contained in the corpus",
+        "Jurisdiction-specific details are not available"
+      ],
+      "legal_caution": "Do not hallucinate information beyond the corpus",
+      "decision": "insufficient_information"
+    },
+    "gold_quotations": [],
+    "claim_evidence_mapping": [],
+    "gold_sources": [],
+    "requires_multi_hop": false,
+    "unanswerable": true,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "UN03",
+    "category": "Unanswerable / Insufficient-Evidence Questions",
+    "difficulty": "hard",
+    "question_type": "unanswerable",
+    "question": "What is the exact deadline for appealing an influencer-marketing fine in France?",
+    "gold_answer": {
+      "summary": "This question cannot be answered with the available sources.",
+      "key_points": [
+        "The required information is not contained in the corpus",
+        "Jurisdiction-specific details are not available"
+      ],
+      "legal_caution": "Do not hallucinate information beyond the corpus",
+      "decision": "insufficient_information"
+    },
+    "gold_quotations": [],
+    "claim_evidence_mapping": [],
+    "gold_sources": [],
+    "requires_multi_hop": false,
+    "unanswerable": true,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  },
+  {
+    "id": "UN04",
+    "category": "Unanswerable / Insufficient-Evidence Questions",
+    "difficulty": "hard",
+    "question_type": "unanswerable",
+    "question": "Will this particular influencer definitely be fined by the Dutch authorities?",
+    "gold_answer": {
+      "summary": "This question cannot be answered with the available sources.",
+      "key_points": [
+        "The required information is not contained in the corpus",
+        "Jurisdiction-specific details are not available"
+      ],
+      "legal_caution": "Do not hallucinate information beyond the corpus",
+      "decision": "insufficient_information"
+    },
+    "gold_quotations": [],
+    "claim_evidence_mapping": [],
+    "gold_sources": [],
+    "requires_multi_hop": false,
+    "unanswerable": true,
+    "decision_support_expectations": {
+      "should_identify": [],
+      "should_warn_about": [],
+      "should_not_claim": []
+    }
+  }
+]
