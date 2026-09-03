@@ -535,15 +535,10 @@ def main() -> None:
     if results_meta and cited_indices:
         print("\nEvidence quotes cited in answer:")
         seen = set()
-        # Renumber cited quotes with normal sequential counting (1, 2, 3, ...),
-        # regardless of the raw citation numbers the answer happens to use
-        # (e.g. an answer that only cites [1] and [3] lists just two quotes, [1] and [2]).
-        citation_number = 0
         for index in cited_indices:
             if index in seen or index < 1 or index > len(results_meta):
                 continue
             seen.add(index)
-            citation_number += 1
             res = results_meta[index - 1]
             processed_file = res.get('processed_file') or res.get('processed_file', '')
             chunk_id = res.get('chunk_id', '')
@@ -552,7 +547,9 @@ def main() -> None:
                 parts = chunk_id.split('-')
                 if len(parts) >= 3 and parts[-2] == 'chunk':
                     chunk_id = f"chunk-{parts[-1]}"
-            print(f"[{citation_number}] File: {processed_file}  Chunk: {chunk_id}")
+            # Keep the citation number identical to the chunk number in the
+            # prompt and answer. Renumbering would make [2] appear as [1].
+            print(f"[{index}] File: {processed_file}  Chunk: {chunk_id}")
             snippet = (res.get('quotation') or res.get('translated_paragraph') or res.get('original_paragraph') or '').strip()
             if snippet:
                 q_lang = res.get('quotation_language') or ''
