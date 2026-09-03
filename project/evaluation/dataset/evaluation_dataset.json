@@ -1,0 +1,4995 @@
+{
+  "metadata": {
+    "title": "Influencer Regulation RAG Chatbot Evaluation Dataset",
+    "version": "1.0",
+    "created": "2026-09-01",
+    "corpus": "European Commission Influencer Legal Hub, Legal Briefs #1-#10",
+    "purpose": "Evaluate retrieval, answer correctness, quotation/evidence grounding, and decision support.",
+    "question_count": 100,
+    "important_note": "Gold quotations are deliberately short evidence anchors. The evaluator should verify exact quotation presence against the chatbot's corpus before scoring."
+  },
+  "questions": [
+    {
+      "id": "A01",
+      "category": "General Consumer Law",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "Why does EU consumer law matter to influencers who regularly advertise or sell products?",
+      "gold_answer": {
+        "summary": "Regular commercial activity can make an influencer a trader subject to consumer-protection obligations.",
+        "key_points": [
+          "regular commercial activity can trigger trader status",
+          "traders have consumer-protection responsibilities"
+        ],
+        "legal_caution": "",
+        "decision": "potential"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A01-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "regular commercial activity can trigger trader status"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "regular commercial activity can trigger trader status",
+          "supporting_quote_ids": [
+            "A01-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A02",
+      "category": "General Consumer Law",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "Does EU consumer protection apply only to large companies?",
+      "gold_answer": {
+        "summary": "No. The materials explain that trader obligations can apply to one-person businesses as well as large companies.",
+        "key_points": [
+          "one-person businesses can be traders",
+          "consumer obligations are not limited to large companies"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A02-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "one-person businesses can be traders"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "one-person businesses can be traders",
+          "supporting_quote_ids": [
+            "A02-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A03",
+      "category": "General Consumer Law",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I am a solo creator and regularly make money from brand deals. Do consumer rules potentially apply even though I have no employees?",
+      "gold_answer": {
+        "summary": "Yes. The Hub treats a one-person business or natural person engaged in relevant commercial activity as potentially a trader.",
+        "key_points": [
+          "one-person businesses can fall within trader rules",
+          "regular monetisation is relevant"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A03-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "one-person businesses can fall within trader rules"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "one-person businesses can fall within trader rules",
+          "supporting_quote_ids": [
+            "A03-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A04",
+      "category": "General Consumer Law",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I advertise products but never sell anything myself. Could consumer-law duties still apply?",
+      "gold_answer": {
+        "summary": "Yes. The Hub expressly treats advertising activity as relevant to trader obligations.",
+        "key_points": [
+          "advertising alone can be commercial activity",
+          "trader duties can apply to advertisers"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A04-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "advertising alone can be commercial activity"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "advertising alone can be commercial activity",
+          "supporting_quote_ids": [
+            "A04-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A05",
+      "category": "General Consumer Law",
+      "difficulty": "medium",
+      "question_type": "comparison",
+      "question": "How are consumer protection and product safety connected for influencers?",
+      "gold_answer": {
+        "summary": "Influencers who advertise or sell products should not promote dangerous or recalled products and are directed to Safety Gate.",
+        "key_points": [
+          "product safety is part of the influencer compliance picture",
+          "recalled products should not be advertised or sold"
+        ],
+        "legal_caution": "",
+        "decision": "check Safety Gate"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A05-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "product safety is part of the influencer compliance picture"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "product safety is part of the influencer compliance picture",
+          "supporting_quote_ids": [
+            "A05-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A06",
+      "category": "General Consumer Law",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "Before promoting a product from a brand, what broad consumer-law checks should an influencer consider?",
+      "gold_answer": {
+        "summary": "At minimum, consider whether the activity is commercial, whether advertising needs disclosure, whether consumer information duties apply, and whether the product is safe.",
+        "key_points": [
+          "commercial/trader status",
+          "advertising disclosure",
+          "consumer information",
+          "product safety"
+        ],
+        "legal_caution": "",
+        "decision": "review before publishing"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A06-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "commercial/trader status"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "commercial/trader status",
+          "supporting_quote_ids": [
+            "A06-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "commercial relationship",
+          "disclosure",
+          "product safety"
+        ],
+        "should_warn_about": [
+          "national rules may add detail"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A07",
+      "category": "General Consumer Law",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "A creator is paid to advertise a product but says, 'I am only a content creator, so consumer law does not apply.' How should this be assessed?",
+      "gold_answer": {
+        "summary": "The label 'content creator' does not by itself remove consumer-law obligations; the relevant issue is whether the activity is commercial and the person acts as a trader.",
+        "key_points": [
+          "legal status depends on activity, not merely the label used",
+          "commercial advertising can trigger trader obligations"
+        ],
+        "legal_caution": "",
+        "decision": "potentially applicable"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A07-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "legal status depends on activity, not merely the label used"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "legal status depends on activity, not merely the label used",
+          "supporting_quote_ids": [
+            "A07-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "A08",
+      "category": "General Consumer Law",
+      "difficulty": "medium",
+      "question_type": "conceptual",
+      "question": "Is the Influencer Legal Hub presented as an exhaustive statement of every law that can apply to influencers?",
+      "gold_answer": {
+        "summary": "No. The Hub presents selected important EU rules and explains that other national, media and self-regulatory rules can also matter.",
+        "key_points": [
+          "the materials are a selection, not an exhaustive code",
+          "national rules can add requirements"
+        ],
+        "legal_caution": "Do not treat the Hub as a complete substitute for jurisdiction-specific legal advice.",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "A08-Q1",
+          "quote": "When you do business on a regular basis, European law will see you as a ‘trader’.",
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf",
+          "supports": [
+            "the materials are a selection, not an exhaustive code"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "the materials are a selection, not an exhaustive code",
+          "supporting_quote_ids": [
+            "A08-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #1: European consumer law and influencer marketing",
+          "source_url": "https://commission.europa.eu/document/download/e05a5fcb-64e2-494a-8ec4-042c9d1d7aa5_en?filename=Legal+brief+1.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B09",
+      "category": "Trader Status",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "What is the main EU consumer-law concept used in the Hub to determine whether influencer consumer rules apply?",
+      "gold_answer": {
+        "summary": "The key concept is whether the influencer acts as a 'trader' in commercial practices.",
+        "key_points": [
+          "trader status is central to the UCPD framework"
+        ],
+        "legal_caution": "",
+        "decision": "trader status"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B09-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "trader status is central to the UCPD framework"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "trader status is central to the UCPD framework",
+          "supporting_quote_ids": [
+            "B09-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B10",
+      "category": "Trader Status",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "What three broad elements does the Hub describe for trader status?",
+      "gold_answer": {
+        "summary": "The brief discusses revenue through content monetisation, commercial practices towards consumers, and acting in connection with a trade, business, craft or profession.",
+        "key_points": [
+          "content monetisation/revenue",
+          "commercial practices towards consumers",
+          "professional connection"
+        ],
+        "legal_caution": "",
+        "decision": "depends"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B10-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "content monetisation/revenue"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "content monetisation/revenue",
+          "supporting_quote_ids": [
+            "B10-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B11",
+      "category": "Trader Status",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "Can an influencer be a trader without being incorporated as a company?",
+      "gold_answer": {
+        "summary": "Yes. The brief expressly discusses natural persons and one-person businesses, including people who have not registered a business.",
+        "key_points": [
+          "natural persons can be traders",
+          "company incorporation is not decisive"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B11-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "natural persons can be traders"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "natural persons can be traders",
+          "supporting_quote_ids": [
+            "B11-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B12",
+      "category": "Trader Status",
+      "difficulty": "hard",
+      "question_type": "case_law",
+      "question": "Does selling eight items online automatically make someone a trader under Kamenova?",
+      "gold_answer": {
+        "summary": "No. The brief says the Kamenova criteria are not a mechanical checklist and that selling eight items did not automatically establish trader status.",
+        "key_points": [
+          "Kamenova criteria are contextual",
+          "eight sales alone were not automatically decisive"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B12-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "Kamenova criteria are contextual"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "Kamenova criteria are contextual",
+          "supporting_quote_ids": [
+            "B12-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B13",
+      "category": "Trader Status",
+      "difficulty": "hard",
+      "question_type": "case_law",
+      "question": "What kinds of factors did the Kamenova case identify as potentially relevant to trader status?",
+      "gold_answer": {
+        "summary": "Relevant factors include organisation of sales, profit intention, expertise, legal status, VAT, remuneration or incentives, resale activity, product type/value and concentration of the offer.",
+        "key_points": [
+          "multiple contextual factors matter",
+          "VAT is one factor, not a standalone test"
+        ],
+        "legal_caution": "",
+        "decision": "depends"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B13-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "multiple contextual factors matter"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "multiple contextual factors matter",
+          "supporting_quote_ids": [
+            "B13-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B14",
+      "category": "Trader Status",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I am not VAT-registered. Does that alone mean I cannot be a trader?",
+      "gold_answer": {
+        "summary": "No. VAT status is one factor mentioned in Kamenova, but the brief explicitly presents multiple factors and says the test is not a yes-or-no checklist.",
+        "key_points": [
+          "VAT is only one factor",
+          "absence of VAT registration is not automatically decisive"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B14-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "VAT is only one factor"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "VAT is only one factor",
+          "supporting_quote_ids": [
+            "B14-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B15",
+      "category": "Trader Status",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I receive free products and invitations regularly but little direct cash. Could that still be relevant to trader status?",
+      "gold_answer": {
+        "summary": "Yes. The brief says regular content activity can involve money or other benefits such as invitations, gifts and discounts.",
+        "key_points": [
+          "non-cash benefits can matter",
+          "regularity is relevant"
+        ],
+        "legal_caution": "",
+        "decision": "potentially yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B15-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "non-cash benefits can matter"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "non-cash benefits can matter",
+          "supporting_quote_ids": [
+            "B15-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B16",
+      "category": "Trader Status",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "A creator reviews a gadget sent by a company and receives no money. Why could the review still be a commercial practice?",
+      "gold_answer": {
+        "summary": "The brief gives reviews of products sent by companies as an example of communication that can be a commercial practice towards consumers.",
+        "key_points": [
+          "product review can be commercial",
+          "company-provided product is relevant"
+        ],
+        "legal_caution": "",
+        "decision": "potentially"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B16-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "product review can be commercial"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "product review can be commercial",
+          "supporting_quote_ids": [
+            "B16-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B17",
+      "category": "Trader Status",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "Can an agreement made through Instagram DMs potentially form a contract?",
+      "gold_answer": {
+        "summary": "Yes. The brief says a meeting of the minds can form a contract and expressly includes agreements expressed in social-media direct messages.",
+        "key_points": [
+          "DM agreements can be contracts",
+          "clear offer and acceptance are relevant"
+        ],
+        "legal_caution": "",
+        "decision": "potentially yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B17-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "DM agreements can be contracts"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "DM agreements can be contracts",
+          "supporting_quote_ids": [
+            "B17-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B18",
+      "category": "Trader Status",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "A brand offers me eight paid posts through Instagram DMs. What should I do to reduce uncertainty about the agreement?",
+      "gold_answer": {
+        "summary": "The brief recommends considering a more formal written/electronically signed agreement because messages may disappear and formal documentation can help prove the agreement.",
+        "key_points": [
+          "document the agreement formally",
+          "preserve evidence of terms"
+        ],
+        "legal_caution": "",
+        "decision": "use a formal written agreement"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B18-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "document the agreement formally"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "document the agreement formally",
+          "supporting_quote_ids": [
+            "B18-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "terms",
+          "evidence",
+          "payment and deliverables"
+        ],
+        "should_warn_about": [
+          "contract law is not harmonised at EU level"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B19",
+      "category": "Trader Status",
+      "difficulty": "hard",
+      "question_type": "comparison",
+      "question": "Why is the Kamenova list better treated as a set of factors than as a checklist?",
+      "gold_answer": {
+        "summary": "The brief expressly says the criteria do not end in a yes-or-no answer; they help assess specific situations.",
+        "key_points": [
+          "criteria are contextual",
+          "no single factor automatically decides trader status"
+        ],
+        "legal_caution": "",
+        "decision": "context-dependent"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B19-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "criteria are contextual"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "criteria are contextual",
+          "supporting_quote_ids": [
+            "B19-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "B20",
+      "category": "Trader Status",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "A creator has a growing number of paid collaborations and regularly monetises content. What direction does the Hub suggest for trader status?",
+      "gold_answer": {
+        "summary": "Regular, increasingly commercial monetisation makes trader status more likely.",
+        "key_points": [
+          "regular commercial activity",
+          "repeated monetisation"
+        ],
+        "legal_caution": "",
+        "decision": "likely trader"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "B20-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "regular commercial activity"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "regular commercial activity",
+          "supporting_quote_ids": [
+            "B20-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C21",
+      "category": "Advertising Disclosure",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "When should an influencer make clear that content is advertising?",
+      "gold_answer": {
+        "summary": "Where the influencer is making advertising content, the audience should understand that it is advertising.",
+        "key_points": [
+          "advertising content should be recognisable as advertising"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C21-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "advertising content should be recognisable as advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "advertising content should be recognisable as advertising",
+          "supporting_quote_ids": [
+            "C21-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C22",
+      "category": "Advertising Disclosure",
+      "difficulty": "easy",
+      "question_type": "scenario_application",
+      "question": "I receive money to post a sponsored Instagram Story. Do I need a disclosure?",
+      "gold_answer": {
+        "summary": "Yes. Paid endorsements are within the advertising models described and advertising disclosures are expected.",
+        "key_points": [
+          "paid endorsement",
+          "disclosure expected"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C22-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "paid endorsement"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "paid endorsement",
+          "supporting_quote_ids": [
+            "C22-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C23",
+      "category": "Advertising Disclosure",
+      "difficulty": "easy",
+      "question_type": "scenario_application",
+      "question": "A brand gives me a free hotel room in exchange for promotion. Does the Hub treat this as potentially requiring disclosure?",
+      "gold_answer": {
+        "summary": "Yes. Barter arrangements such as free hotel rooms in exchange for advertising are covered.",
+        "key_points": [
+          "free hotel stay can be barter",
+          "advertising disclosure is expected"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C23-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "free hotel stay can be barter"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "free hotel stay can be barter",
+          "supporting_quote_ids": [
+            "C23-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C24",
+      "category": "Advertising Disclosure",
+      "difficulty": "easy",
+      "question_type": "scenario_application",
+      "question": "A creator receives a free video game from a company and is expected to promote it. Is this potentially commercial content?",
+      "gold_answer": {
+        "summary": "Yes. The brief specifically uses a free video game and other PR activities as examples of barter.",
+        "key_points": [
+          "gifted goods/services can be barter",
+          "commercial benefit can trigger disclosure"
+        ],
+        "legal_caution": "",
+        "decision": "potentially yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C24-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "gifted goods/services can be barter"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "gifted goods/services can be barter",
+          "supporting_quote_ids": [
+            "C24-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C25",
+      "category": "Advertising Disclosure",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I earn a percentage of sales through an affiliate link. Is that treated as advertising in the Hub?",
+      "gold_answer": {
+        "summary": "Affiliate marketing is one of the monetisation models and advertising disclosures are expected for it.",
+        "key_points": [
+          "affiliate commission",
+          "affiliate marketing should be disclosed"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C25-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "affiliate commission"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "affiliate commission",
+          "supporting_quote_ids": [
+            "C25-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C26",
+      "category": "Advertising Disclosure",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "A PR package arrives without an explicit instruction to post. Should the creator consider disclosure if they feature the products?",
+      "gold_answer": {
+        "summary": "Yes. The brief says PR packages can carry an implicit advertising expectation and recommends considering disclosure.",
+        "key_points": [
+          "PR packages can create an implicit advertising expectation",
+          "disclosure is safer when featured"
+        ],
+        "legal_caution": "",
+        "decision": "consider disclosure"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C26-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "PR packages can create an implicit advertising expectation"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "PR packages can create an implicit advertising expectation",
+          "supporting_quote_ids": [
+            "C26-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C27",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "A creator receives a complimentary haircut and posts a positive video about the salon. Is the free service potentially relevant to disclosure?",
+      "gold_answer": {
+        "summary": "Yes. The brief expressly includes a gifted haircut as an example of a service with asset value connected to advertising.",
+        "key_points": [
+          "free service can be a benefit with asset value",
+          "advertising link matters"
+        ],
+        "legal_caution": "",
+        "decision": "potentially yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C27-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "free service can be a benefit with asset value"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "free service can be a benefit with asset value",
+          "supporting_quote_ids": [
+            "C27-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C28",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "conceptual",
+      "question": "What is an 'advertorial' in the context described by the Hub?",
+      "gold_answer": {
+        "summary": "It is content that can look objective or organic but actually includes advertising, creating a risk of misleading consumers.",
+        "key_points": [
+          "advertorial can look like ordinary content",
+          "undisclosed advertorials are prohibited under the cited UCPD provision"
+        ],
+        "legal_caution": "",
+        "decision": "must be disclosed"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C28-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "advertorial can look like ordinary content"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "advertorial can look like ordinary content",
+          "supporting_quote_ids": [
+            "C28-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C29",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "fact_retrieval",
+      "question": "What does UCPD Annex point 11 prohibit according to the advertising brief?",
+      "gold_answer": {
+        "summary": "It prohibits undisclosed advertorials where the relevant advertising relationship is not disclosed.",
+        "key_points": [
+          "point 11 addresses advertorials",
+          "undisclosed advertorials are prohibited"
+        ],
+        "legal_caution": "",
+        "decision": "prohibited"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C29-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "point 11 addresses advertorials"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "point 11 addresses advertorials",
+          "supporting_quote_ids": [
+            "C29-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C30",
+      "category": "Advertising Disclosure",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "If I receive a benefit but it is not cash, does the Hub say disclosure is unnecessary?",
+      "gold_answer": {
+        "summary": "No. The brief expressly extends disclosure expectations to gifted products, services and other benefits.",
+        "key_points": [
+          "non-cash benefits can trigger disclosure",
+          "cash is not the only relevant consideration"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C30-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "non-cash benefits can trigger disclosure"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "non-cash benefits can trigger disclosure",
+          "supporting_quote_ids": [
+            "C30-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C31",
+      "category": "Advertising Disclosure",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "Is a disclosure still relevant when the content is temporary, such as an Instagram Story?",
+      "gold_answer": {
+        "summary": "Yes. Endorsements can include temporary content, and advertising disclosures are expected for advertising content.",
+        "key_points": [
+          "temporary content can be advertising",
+          "disclosure applies"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C31-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "temporary content can be advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "temporary content can be advertising",
+          "supporting_quote_ids": [
+            "C31-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C32",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "Where should I put an advertising disclosure so consumers can easily see it?",
+      "gold_answer": {
+        "summary": "The brief recommends placing it where consumers can easily spot it and warns against requiring them to scroll or click 'read more'.",
+        "key_points": [
+          "disclosure should be easily visible",
+          "avoid hidden/low-visibility placement"
+        ],
+        "legal_caution": "",
+        "decision": "make it prominent"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C32-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "disclosure should be easily visible"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "disclosure should be easily visible",
+          "supporting_quote_ids": [
+            "C32-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "placement",
+          "visibility",
+          "platform tools"
+        ],
+        "should_warn_about": [
+          "national authorities may have additional expectations"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C33",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "I put '#ad' at the very end of a long Instagram caption. Is that necessarily safe?",
+      "gold_answer": {
+        "summary": "Not necessarily. The brief warns that disclosures at the end of long captions may not be easily seen.",
+        "key_points": [
+          "visibility matters",
+          "end-of-caption disclosure may be inadequate"
+        ],
+        "legal_caution": "",
+        "decision": "not necessarily"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C33-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "visibility matters"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "visibility matters",
+          "supporting_quote_ids": [
+            "C33-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C34",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "I mention that a video is an ad only in the final seconds. Could that be a problem?",
+      "gold_answer": {
+        "summary": "Yes. If consumers do not watch the whole video, they may not see the disclosure; the brief therefore stresses easy visibility.",
+        "key_points": [
+          "disclosure must be easy to see",
+          "video-only disclosure can be missed"
+        ],
+        "legal_caution": "",
+        "decision": "potential problem"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C34-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "disclosure must be easy to see"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "disclosure must be easy to see",
+          "supporting_quote_ids": [
+            "C34-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C35",
+      "category": "Advertising Disclosure",
+      "difficulty": "medium",
+      "question_type": "comparison",
+      "question": "Is using a platform's paid-partnership label the only possible disclosure method?",
+      "gold_answer": {
+        "summary": "No. The brief mentions platform features as an easy option but also discusses clear words or hashtags in visible places.",
+        "key_points": [
+          "platform features are one option",
+          "clear words/hashtags can also be used"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C35-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "platform features are one option"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "platform features are one option",
+          "supporting_quote_ids": [
+            "C35-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "C36",
+      "category": "Advertising Disclosure",
+      "difficulty": "hard",
+      "question_type": "comparison",
+      "question": "Why might '#partner' or '#ambassador' be less clear than an explicit advertising disclosure?",
+      "gold_answer": {
+        "summary": "The brief says disclosures should leave no interpretation that the content is advertising and notes that generic terms can be used differently.",
+        "key_points": [
+          "clarity is the key criterion",
+          "ambiguous terminology may leave room for interpretation"
+        ],
+        "legal_caution": "",
+        "decision": "use an unambiguous disclosure"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "C36-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "clarity is the key criterion"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "clarity is the key criterion",
+          "supporting_quote_ids": [
+            "C36-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D37",
+      "category": "Content Monetisation",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "What three influencer-marketing deal types are highlighted in the Hub?",
+      "gold_answer": {
+        "summary": "Endorsements, barters and affiliate marketing are highlighted.",
+        "key_points": [
+          "endorsement",
+          "barter",
+          "affiliate marketing"
+        ],
+        "legal_caution": "",
+        "decision": "three main types"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D37-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "endorsement"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "endorsement",
+          "supporting_quote_ids": [
+            "D37-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D38",
+      "category": "Content Monetisation",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "What is an endorsement in the Hub's monetisation model?",
+      "gold_answer": {
+        "summary": "An endorsement involves receiving money to create advertising content.",
+        "key_points": [
+          "money exchanged for advertising"
+        ],
+        "legal_caution": "",
+        "decision": "endorsement"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D38-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "money exchanged for advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "money exchanged for advertising",
+          "supporting_quote_ids": [
+            "D38-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D39",
+      "category": "Content Monetisation",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "What is barter in influencer marketing?",
+      "gold_answer": {
+        "summary": "Barter involves receiving goods or services in exchange for advertising or promotion.",
+        "key_points": [
+          "goods/services exchanged for advertising"
+        ],
+        "legal_caution": "",
+        "decision": "barter"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D39-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "goods/services exchanged for advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "goods/services exchanged for advertising",
+          "supporting_quote_ids": [
+            "D39-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D40",
+      "category": "Content Monetisation",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "What is affiliate marketing?",
+      "gold_answer": {
+        "summary": "The influencer receives a percentage or commission based on sales driven, often tracked through a link or discount code.",
+        "key_points": [
+          "commission based on sales",
+          "affiliate link/discount code"
+        ],
+        "legal_caution": "",
+        "decision": "affiliate marketing"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D40-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "commission based on sales"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "commission based on sales",
+          "supporting_quote_ids": [
+            "D40-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D41",
+      "category": "Content Monetisation",
+      "difficulty": "medium",
+      "question_type": "comparison",
+      "question": "How does affiliate marketing differ from an endorsement?",
+      "gold_answer": {
+        "summary": "An endorsement is described as payment for creating ads, whereas affiliate marketing is tied to a percentage of sales driven.",
+        "key_points": [
+          "payment structure differs",
+          "affiliate model depends on sales"
+        ],
+        "legal_caution": "",
+        "decision": "depends on arrangement"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D41-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "payment structure differs"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "payment structure differs",
+          "supporting_quote_ids": [
+            "D41-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D42",
+      "category": "Content Monetisation",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "A brand gives me clothing and asks me to post about it. Which monetisation model best fits the Hub?",
+      "gold_answer": {
+        "summary": "This is a barter/gifted-product arrangement if the goods are provided in exchange for promotion.",
+        "key_points": [
+          "goods exchanged for advertising",
+          "barter"
+        ],
+        "legal_caution": "",
+        "decision": "barter"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D42-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "goods exchanged for advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "goods exchanged for advertising",
+          "supporting_quote_ids": [
+            "D42-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D43",
+      "category": "Content Monetisation",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "A creator is invited on a brand trip and the brand expects social promotion. Can this fall within barter?",
+      "gold_answer": {
+        "summary": "Yes. The advertising brief explains that brand trips and PR packages can be barters where the brand expects advertising benefit.",
+        "key_points": [
+          "brand trip",
+          "expected advertising benefit"
+        ],
+        "legal_caution": "",
+        "decision": "potentially barter"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D43-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "brand trip"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "brand trip",
+          "supporting_quote_ids": [
+            "D43-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D44",
+      "category": "Content Monetisation",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "Can one post involve more than one influencer-marketing model?",
+      "gold_answer": {
+        "summary": "Yes. Influencer-marketing activities can combine models, so a single post may involve multiple forms of commercial relationship.",
+        "key_points": [
+          "models can overlap",
+          "do not assume one exclusive category"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D44-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "models can overlap"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "models can overlap",
+          "supporting_quote_ids": [
+            "D44-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D45",
+      "category": "Content Monetisation",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "I am unsure whether a free product is a gift or part of a commercial arrangement. What fact should I examine?",
+      "gold_answer": {
+        "summary": "Examine whether the product/service was provided in connection with an expectation or purpose of advertising benefit.",
+        "key_points": [
+          "purpose of the benefit",
+          "brand expectation"
+        ],
+        "legal_caution": "",
+        "decision": "depends on the relationship"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D45-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "purpose of the benefit"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "purpose of the benefit",
+          "supporting_quote_ids": [
+            "D45-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "agreement or expectation",
+          "nature of benefit"
+        ],
+        "should_warn_about": [
+          "facts matter"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "D46",
+      "category": "Content Monetisation",
+      "difficulty": "hard",
+      "question_type": "comparison",
+      "question": "Why should an influencer distinguish between a casual gift and a product provided for advertising purposes?",
+      "gold_answer": {
+        "summary": "The legal significance depends on the connection between the benefit and advertising activity; the Hub treats benefits connected to advertising as relevant to disclosure.",
+        "key_points": [
+          "connection between benefit and advertising",
+          "commercial purpose"
+        ],
+        "legal_caution": "",
+        "decision": "depends"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "D46-Q1",
+          "quote": "the creator economy revolves around five main business models",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "connection between benefit and advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "connection between benefit and advertising",
+          "supporting_quote_ids": [
+            "D46-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E47",
+      "category": "Influencers as Sellers",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "When does Legal Brief #8 say an influencer needs to provide consumer information?",
+      "gold_answer": {
+        "summary": "When acting as a trader and selling goods or services directly to consumers.",
+        "key_points": [
+          "trader selling directly to consumers",
+          "information duties"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E47-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "trader selling directly to consumers"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "trader selling directly to consumers",
+          "supporting_quote_ids": [
+            "E47-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E48",
+      "category": "Influencers as Sellers",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "What is the basic conformity principle for goods sold by an influencer?",
+      "gold_answer": {
+        "summary": "Goods should match the contractual description, type, quantity, quality and other agreed features.",
+        "key_points": [
+          "goods must conform to the sales contract"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E48-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "goods must conform to the sales contract"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "goods must conform to the sales contract",
+          "supporting_quote_ids": [
+            "E48-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E49",
+      "category": "Influencers as Sellers",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I advertise a hoodie as having four pockets, but customers receive a two-pocket version. What issue does this raise?",
+      "gold_answer": {
+        "summary": "It can be a conformity problem because the goods should have the characteristics promised in the contract.",
+        "key_points": [
+          "advertised/contracted characteristics matter",
+          "goods must conform"
+        ],
+        "legal_caution": "",
+        "decision": "non-conformity"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E49-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "advertised/contracted characteristics matter"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "advertised/contracted characteristics matter",
+          "supporting_quote_ids": [
+            "E49-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E50",
+      "category": "Influencers as Sellers",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "A customer tells me they need a camera for diving and I say my product is suitable, but it is not waterproof. What issue may arise?",
+      "gold_answer": {
+        "summary": "The product may fail a particular-purpose conformity requirement if that purpose was communicated and accepted.",
+        "key_points": [
+          "particular purpose communicated",
+          "seller's acceptance matters"
+        ],
+        "legal_caution": "",
+        "decision": "potential non-conformity"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E50-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "particular purpose communicated"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "particular purpose communicated",
+          "supporting_quote_ids": [
+            "E50-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E51",
+      "category": "Influencers as Sellers",
+      "difficulty": "medium",
+      "question_type": "conceptual",
+      "question": "What does 'non-conformity' mean in the seller context?",
+      "gold_answer": {
+        "summary": "It concerns goods or services not meeting the contractual or applicable conformity expectations.",
+        "key_points": [
+          "product/service must meet contractual expectations"
+        ],
+        "legal_caution": "",
+        "decision": "non-conformity"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E51-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "product/service must meet contractual expectations"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "product/service must meet contractual expectations",
+          "supporting_quote_ids": [
+            "E51-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E52",
+      "category": "Influencers as Sellers",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "If a seller provides the wrong quantity of goods, can that be relevant to conformity?",
+      "gold_answer": {
+        "summary": "Yes. Quantity is expressly included among the characteristics that goods must meet under the sales contract.",
+        "key_points": [
+          "quantity is a conformity requirement"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E52-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "quantity is a conformity requirement"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "quantity is a conformity requirement",
+          "supporting_quote_ids": [
+            "E52-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E53",
+      "category": "Influencers as Sellers",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "A digital product is incompatible with the functionality promised to the consumer. What broad issue should the influencer consider?",
+      "gold_answer": {
+        "summary": "The influencer should consider whether the digital product/service meets the agreed requirements and expectations.",
+        "key_points": [
+          "functionality can be part of conformity",
+          "contract terms matter"
+        ],
+        "legal_caution": "",
+        "decision": "potential non-conformity"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E53-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "functionality can be part of conformity"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "functionality can be part of conformity",
+          "supporting_quote_ids": [
+            "E53-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E54",
+      "category": "Influencers as Sellers",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "What should an influencer check before launching a product that they describe in detail on social media?",
+      "gold_answer": {
+        "summary": "They should ensure the product actually matches the descriptions and features they communicate to consumers.",
+        "key_points": [
+          "marketing claims should match the product",
+          "conformity"
+        ],
+        "legal_caution": "",
+        "decision": "verify claims before sale"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E54-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "marketing claims should match the product"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "marketing claims should match the product",
+          "supporting_quote_ids": [
+            "E54-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "description",
+          "features",
+          "quality"
+        ],
+        "should_warn_about": [
+          "do not promise features the product lacks"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E55",
+      "category": "Influencers as Sellers",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "Why does the Hub connect product quality with an influencer's reputation?",
+      "gold_answer": {
+        "summary": "It notes that poor-quality products can cause negative reviews and reduced sales, in addition to legal problems.",
+        "key_points": [
+          "quality has legal and business consequences"
+        ],
+        "legal_caution": "",
+        "decision": "quality matters"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E55-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "quality has legal and business consequences"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "quality has legal and business consequences",
+          "supporting_quote_ids": [
+            "E55-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E56",
+      "category": "Influencers as Sellers",
+      "difficulty": "hard",
+      "question_type": "comparison",
+      "question": "How is a seller's obligation different from simply making a sponsored post?",
+      "gold_answer": {
+        "summary": "Selling involves consumer-contract and conformity obligations in addition to advertising-related duties.",
+        "key_points": [
+          "selling triggers seller obligations",
+          "advertising and selling are distinct legal roles"
+        ],
+        "legal_caution": "",
+        "decision": "different obligations"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E56-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "selling triggers seller obligations"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "selling triggers seller obligations",
+          "supporting_quote_ids": [
+            "E56-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E57",
+      "category": "Influencers as Sellers",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "An influencer sells a service that does not match what was promised in the contract. Can the same conformity logic be relevant to services?",
+      "gold_answer": {
+        "summary": "Yes. The seller training covers goods and services and stresses that consumers should receive what was promised.",
+        "key_points": [
+          "services are also covered",
+          "promised performance matters"
+        ],
+        "legal_caution": "",
+        "decision": "potentially yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E57-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "services are also covered"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "services are also covered",
+          "supporting_quote_ids": [
+            "E57-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "E58",
+      "category": "Influencers as Sellers",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "Why should a seller make sure product descriptions are accurate?",
+      "gold_answer": {
+        "summary": "The Hub explains that goods should correspond to what was advertised and agreed with the consumer.",
+        "key_points": [
+          "description is part of conformity",
+          "advertising and contract expectations connect"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "E58-Q1",
+          "quote": "these products need to comply with certain standards.",
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf",
+          "supports": [
+            "description is part of conformity"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "description is part of conformity",
+          "supporting_quote_ids": [
+            "E58-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #7: Influencers as sellers - non-conformity issues with goods and services",
+          "source_url": "https://commission.europa.eu/document/download/fd4a0021-efe6-45b3-8ab7-7dcd326be079_en?filename=Legal+brief+7.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F59",
+      "category": "Consumer Contracts",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "What EU instrument does Legal Brief #8 identify as setting information duties for online consumer contracts?",
+      "gold_answer": {
+        "summary": "The Consumer Rights Directive is identified as the source of the information duties discussed.",
+        "key_points": [
+          "Consumer Rights Directive",
+          "online contracts"
+        ],
+        "legal_caution": "",
+        "decision": "Consumer Rights Directive"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F59-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "Consumer Rights Directive"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "Consumer Rights Directive",
+          "supporting_quote_ids": [
+            "F59-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F60",
+      "category": "Consumer Contracts",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "What kinds of contracts are especially covered by the information rules discussed in Brief #8?",
+      "gold_answer": {
+        "summary": "The rules apply in particular to contracts concluded online or outside business premises.",
+        "key_points": [
+          "online contracts",
+          "off-premises contracts"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F60-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "online contracts"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "online contracts",
+          "supporting_quote_ids": [
+            "F60-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F61",
+      "category": "Consumer Contracts",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "What information about the trader's identity should an influencer provide when selling online?",
+      "gold_answer": {
+        "summary": "The list includes the trader's identity/trading name and contact information, including a geographical address and available communication details.",
+        "key_points": [
+          "identity/trading name",
+          "contact details",
+          "geographical address"
+        ],
+        "legal_caution": "",
+        "decision": "provide required information"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F61-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "identity/trading name"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "identity/trading name",
+          "supporting_quote_ids": [
+            "F61-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F62",
+      "category": "Consumer Contracts",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "Does the Hub mention the total price as part of the information duties?",
+      "gold_answer": {
+        "summary": "Yes. The list includes the total price including taxes and, where applicable, additional charges or how the price is calculated.",
+        "key_points": [
+          "total price",
+          "taxes/additional charges"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F62-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "total price"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "total price",
+          "supporting_quote_ids": [
+            "F62-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F63",
+      "category": "Consumer Contracts",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I sell an online coaching course but do not explain what the coaching includes. What information duty could this raise?",
+      "gold_answer": {
+        "summary": "The Hub gives coaching as an example and says sellers need to indicate the main features of goods or services.",
+        "key_points": [
+          "main features of services",
+          "coaching description"
+        ],
+        "legal_caution": "",
+        "decision": "potential issue"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F63-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "main features of services"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "main features of services",
+          "supporting_quote_ids": [
+            "F63-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F64",
+      "category": "Consumer Contracts",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "Can an influencer who works from home simply omit their geographical address because it is inconvenient?",
+      "gold_answer": {
+        "summary": "The Hub says the geographical address must be shared, while acknowledging privacy concerns and suggesting consideration of alternatives such as a business address where available.",
+        "key_points": [
+          "geographical address is an information duty",
+          "privacy concerns do not automatically remove the duty"
+        ],
+        "legal_caution": "",
+        "decision": "not automatically"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F64-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "geographical address is an information duty"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "geographical address is an information duty",
+          "supporting_quote_ids": [
+            "F64-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F65",
+      "category": "Consumer Contracts",
+      "difficulty": "hard",
+      "question_type": "fact_retrieval",
+      "question": "What information does the Hub mention about withdrawal rights?",
+      "gold_answer": {
+        "summary": "Where a withdrawal right exists, consumers should receive information about conditions, time limits and procedures, including the model withdrawal form where applicable.",
+        "key_points": [
+          "withdrawal conditions",
+          "time limit and procedures",
+          "model form"
+        ],
+        "legal_caution": "",
+        "decision": "depends on the contract"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F65-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "withdrawal conditions"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "withdrawal conditions",
+          "supporting_quote_ids": [
+            "F65-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F66",
+      "category": "Consumer Contracts",
+      "difficulty": "hard",
+      "question_type": "fact_retrieval",
+      "question": "What does the Hub say about complaint-handling information?",
+      "gold_answer": {
+        "summary": "The information duties include arrangements for payment, delivery/performance and, where applicable, the trader's complaint-handling policy.",
+        "key_points": [
+          "complaint handling policy",
+          "payment/delivery information"
+        ],
+        "legal_caution": "",
+        "decision": "provide where applicable"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F66-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "complaint handling policy"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "complaint handling policy",
+          "supporting_quote_ids": [
+            "F66-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F67",
+      "category": "Consumer Contracts",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "I am setting up a website to sell merchandise. What information should I check before launch?",
+      "gold_answer": {
+        "summary": "Check the product characteristics, trader identity and address, price and charges, payment/delivery arrangements, complaint handling, withdrawal information where applicable, and other Article 6 duties.",
+        "key_points": [
+          "product characteristics",
+          "identity/contact",
+          "price",
+          "payment/delivery",
+          "withdrawal where applicable"
+        ],
+        "legal_caution": "",
+        "decision": "complete the required information"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F67-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "product characteristics"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "product characteristics",
+          "supporting_quote_ids": [
+            "F67-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "Article 6 information duties"
+        ],
+        "should_warn_about": [
+          "specific obligations depend on the contract and applicable law"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "F68",
+      "category": "Consumer Contracts",
+      "difficulty": "hard",
+      "question_type": "conceptual",
+      "question": "Why does the Hub insist that information be presented clearly and understandably?",
+      "gold_answer": {
+        "summary": "The information duties are intended to address the information imbalance between professional traders and consumers.",
+        "key_points": [
+          "information asymmetry",
+          "clear and understandable information"
+        ],
+        "legal_caution": "",
+        "decision": "yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "F68-Q1",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "information asymmetry"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "information asymmetry",
+          "supporting_quote_ids": [
+            "F68-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G69",
+      "category": "Intellectual Property",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "What types of intellectual property are highlighted as especially relevant to influencers?",
+      "gold_answer": {
+        "summary": "The Hub highlights copyright, trade marks and designs among the most relevant IP rights.",
+        "key_points": [
+          "copyright",
+          "trade marks",
+          "designs"
+        ],
+        "legal_caution": "",
+        "decision": "relevant"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G69-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "copyright"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "copyright",
+          "supporting_quote_ids": [
+            "G69-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G70",
+      "category": "Intellectual Property",
+      "difficulty": "easy",
+      "question_type": "fact_retrieval",
+      "question": "When does copyright protection arise according to Brief #9?",
+      "gold_answer": {
+        "summary": "Copyright is described as arising automatically with the creation and fixation of an original work.",
+        "key_points": [
+          "automatic protection",
+          "creation and fixation",
+          "original work"
+        ],
+        "legal_caution": "",
+        "decision": "automatically"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G70-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "automatic protection"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "automatic protection",
+          "supporting_quote_ids": [
+            "G70-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G71",
+      "category": "Intellectual Property",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I create an original social-media post. Could it potentially be protected by copyright?",
+      "gold_answer": {
+        "summary": "Yes. Brief #9 expressly notes that some original short texts, including an original social-media post, can be protected.",
+        "key_points": [
+          "original social-media posts can be protected"
+        ],
+        "legal_caution": "",
+        "decision": "potentially yes"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G71-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "original social-media posts can be protected"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "original social-media posts can be protected",
+          "supporting_quote_ids": [
+            "G71-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G72",
+      "category": "Intellectual Property",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "Can an influencer freely use another person's song in a video just because the song is publicly available online?",
+      "gold_answer": {
+        "summary": "No. The brief says influencers should obtain a licence to use a song to avoid copyright infringement, subject to applicable exceptions.",
+        "key_points": [
+          "public availability is not the same as permission",
+          "licensing may be required"
+        ],
+        "legal_caution": "",
+        "decision": "not automatically"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G72-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "public availability is not the same as permission"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "public availability is not the same as permission",
+          "supporting_quote_ids": [
+            "G72-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G73",
+      "category": "Intellectual Property",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "Before using a third-party photograph in a sponsored post, what should an influencer check?",
+      "gold_answer": {
+        "summary": "Check the relevant copyright ownership/permission and whether a licence or another lawful basis permits the intended use.",
+        "key_points": [
+          "third-party rights",
+          "permission/licensing"
+        ],
+        "legal_caution": "",
+        "decision": "check rights first"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G73-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "third-party rights"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "third-party rights",
+          "supporting_quote_ids": [
+            "G73-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "rights holder",
+          "licence/permission",
+          "intended commercial use"
+        ],
+        "should_warn_about": [
+          "exceptions can depend on circumstances and jurisdiction"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G74",
+      "category": "Intellectual Property",
+      "difficulty": "medium",
+      "question_type": "conceptual",
+      "question": "What makes a work 'original' for the copyright explanation in Brief #9?",
+      "gold_answer": {
+        "summary": "The content must reflect the author's free and creative choices.",
+        "key_points": [
+          "free and creative choices"
+        ],
+        "legal_caution": "",
+        "decision": "originality"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G74-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "free and creative choices"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "free and creative choices",
+          "supporting_quote_ids": [
+            "G74-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G75",
+      "category": "Intellectual Property",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "An influencer downloads a photographer's Instagram image and uses it to promote a brand. What broad legal issue should be considered?",
+      "gold_answer": {
+        "summary": "The influencer should consider the photographer's copyright and whether the commercial use is authorised.",
+        "key_points": [
+          "third-party copyright",
+          "commercial use requires attention to rights"
+        ],
+        "legal_caution": "",
+        "decision": "check authorisation"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G75-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "third-party copyright"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "third-party copyright",
+          "supporting_quote_ids": [
+            "G75-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G76",
+      "category": "Intellectual Property",
+      "difficulty": "easy",
+      "question_type": "conceptual",
+      "question": "What is a trade mark?",
+      "gold_answer": {
+        "summary": "It is a distinctive sign used in trade to identify and distinguish goods or services.",
+        "key_points": [
+          "distinctive sign",
+          "identify/distinguish goods or services"
+        ],
+        "legal_caution": "",
+        "decision": "trade mark"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G76-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "distinctive sign"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "distinctive sign",
+          "supporting_quote_ids": [
+            "G76-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G77",
+      "category": "Intellectual Property",
+      "difficulty": "medium",
+      "question_type": "comparison",
+      "question": "How does copyright differ from trade marks and designs in the Hub's explanation?",
+      "gold_answer": {
+        "summary": "Copyright protects original creative works automatically, while trade marks and designs are industrial property rights with different protection mechanisms, including registration.",
+        "key_points": [
+          "copyright automatic on original work",
+          "trade marks/designs have different protection mechanisms"
+        ],
+        "legal_caution": "",
+        "decision": "different rights"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G77-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "copyright automatic on original work"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "copyright automatic on original work",
+          "supporting_quote_ids": [
+            "G77-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G78",
+      "category": "Intellectual Property",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I design a logo for my influencer brand. Which IP category might be relevant?",
+      "gold_answer": {
+        "summary": "A distinctive logo can be relevant to trade-mark protection, subject to the applicable requirements.",
+        "key_points": [
+          "logo",
+          "trade mark"
+        ],
+        "legal_caution": "",
+        "decision": "potentially trade mark"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G78-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "logo"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "logo",
+          "supporting_quote_ids": [
+            "G78-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G79",
+      "category": "Intellectual Property",
+      "difficulty": "medium",
+      "question_type": "scenario_application",
+      "question": "I create the visual appearance of a product and want protection for its appearance. Which IP right should I investigate?",
+      "gold_answer": {
+        "summary": "Design protection is the relevant IP category to investigate for the visual appearance of products.",
+        "key_points": [
+          "visual appearance",
+          "designs"
+        ],
+        "legal_caution": "",
+        "decision": "design protection"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G79-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "visual appearance"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "visual appearance",
+          "supporting_quote_ids": [
+            "G79-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "G80",
+      "category": "Intellectual Property",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "I want to promote a product using a third party's music, image and logo. What should I do before publishing?",
+      "gold_answer": {
+        "summary": "Identify the different IP rights involved and verify that the intended uses are authorised or otherwise lawful.",
+        "key_points": [
+          "different IP rights can apply to different assets",
+          "check authorisation"
+        ],
+        "legal_caution": "",
+        "decision": "verify rights before publication"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "G80-Q1",
+          "quote": "Copyright is an exclusive right that is granted automatically",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "different IP rights can apply to different assets"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "different IP rights can apply to different assets",
+          "supporting_quote_ids": [
+            "G80-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [
+          "copyright",
+          "trade marks",
+          "permissions"
+        ],
+        "should_warn_about": [
+          "one permission may not cover every right"
+        ],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "H81",
+      "category": "Case Law",
+      "difficulty": "hard",
+      "question_type": "case_law",
+      "question": "What was the core issue in Kamenova (C-105/17) as presented by the Hub?",
+      "gold_answer": {
+        "summary": "The case concerned whether an individual selling products online qualified as a trader.",
+        "key_points": [
+          "individual seller",
+          "trader status"
+        ],
+        "legal_caution": "",
+        "decision": "trader-status analysis"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "H81-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "individual seller"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "individual seller",
+          "supporting_quote_ids": [
+            "H81-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "H82",
+      "category": "Case Law",
+      "difficulty": "hard",
+      "question_type": "case_law",
+      "question": "What does Kamenova add to the general trader definition?",
+      "gold_answer": {
+        "summary": "It provides contextual factors that can help determine whether an individual is acting for business purposes.",
+        "key_points": [
+          "contextual criteria",
+          "individual trader status"
+        ],
+        "legal_caution": "",
+        "decision": "interpret using factors"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "H82-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "contextual criteria"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "contextual criteria",
+          "supporting_quote_ids": [
+            "H82-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "H83",
+      "category": "Case Law",
+      "difficulty": "hard",
+      "question_type": "case_law",
+      "question": "What does Peek & Cloppenburg contribute to the influencer advertising analysis?",
+      "gold_answer": {
+        "summary": "The Hub uses it to explain that payment for advertising can include non-cash value, such as exchanging copyright-protected photos.",
+        "key_points": [
+          "non-cash value can constitute payment/consideration",
+          "advertising relationship"
+        ],
+        "legal_caution": "",
+        "decision": "potential disclosure"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "H83-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "non-cash value can constitute payment/consideration"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "non-cash value can constitute payment/consideration",
+          "supporting_quote_ids": [
+            "H83-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "H84",
+      "category": "Case Law",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "A brand provides valuable services to an influencer in exchange for advertising. Does the absence of a cash transfer necessarily remove the disclosure issue?",
+      "gold_answer": {
+        "summary": "No. The Hub's discussion of Peek & Cloppenburg supports considering non-cash benefits where linked to advertising.",
+        "key_points": [
+          "non-cash benefit",
+          "link to advertising"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "H84-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "non-cash benefit"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "non-cash benefit",
+          "supporting_quote_ids": [
+            "H84-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "H85",
+      "category": "Case Law",
+      "difficulty": "hard",
+      "question_type": "comparison",
+      "question": "How do Kamenova and Peek & Cloppenburg address different problems?",
+      "gold_answer": {
+        "summary": "Kamenova is used to assess trader status; Peek & Cloppenburg is used to explain the breadth of payment/value in advertising relationships.",
+        "key_points": [
+          "Kamenova: trader status",
+          "Peek & Cloppenburg: advertising consideration/value"
+        ],
+        "legal_caution": "",
+        "decision": "different legal questions"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "H85-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "Kamenova: trader status"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "Kamenova: trader status",
+          "supporting_quote_ids": [
+            "H85-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "H86",
+      "category": "Case Law",
+      "difficulty": "hard",
+      "question_type": "scenario_application",
+      "question": "A creator is unsure whether a commercial relationship exists because the brand offered only non-cash benefits. Which case discussed in the Hub is especially relevant?",
+      "gold_answer": {
+        "summary": "Peek & Cloppenburg is particularly relevant to the question of non-cash value connected to advertising.",
+        "key_points": [
+          "non-cash benefit",
+          "advertising relationship"
+        ],
+        "legal_caution": "",
+        "decision": "Peek & Cloppenburg"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "H86-Q1",
+          "quote": "European consumer law does not have a clear legal definition for influencers.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "non-cash benefit"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "non-cash benefit",
+          "supporting_quote_ids": [
+            "H86-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "I87",
+      "category": "Media Law & Self-Regulation",
+      "difficulty": "medium",
+      "question_type": "conceptual",
+      "question": "Does complying with consumer law automatically make media-law rules irrelevant?",
+      "gold_answer": {
+        "summary": "No. The Hub says consumer law and media law can apply at the same time.",
+        "key_points": [
+          "multiple legal regimes can apply simultaneously"
+        ],
+        "legal_caution": "",
+        "decision": "no"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "I87-Q1",
+          "quote": "media law and industry self-regulation",
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf",
+          "supports": [
+            "multiple legal regimes can apply simultaneously"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "multiple legal regimes can apply simultaneously",
+          "supporting_quote_ids": [
+            "I87-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "I88",
+      "category": "Media Law & Self-Regulation",
+      "difficulty": "medium",
+      "question_type": "comparison",
+      "question": "How is industry self-regulation different from mandatory consumer and media law?",
+      "gold_answer": {
+        "summary": "The Hub describes consumer and media law as generally mandatory, while industry self-regulation mainly relies on voluntary compliance.",
+        "key_points": [
+          "mandatory law",
+          "voluntary self-regulation"
+        ],
+        "legal_caution": "",
+        "decision": "different"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "I88-Q1",
+          "quote": "media law and industry self-regulation",
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf",
+          "supports": [
+            "mandatory law"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "mandatory law",
+          "supporting_quote_ids": [
+            "I88-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "I89",
+      "category": "Media Law & Self-Regulation",
+      "difficulty": "medium",
+      "question_type": "fact_retrieval",
+      "question": "What does the AVMSD do in the influencer context described by the Hub?",
+      "gold_answer": {
+        "summary": "It includes rules prohibiting hidden advertising and subliminal advertising techniques.",
+        "key_points": [
+          "hidden advertising",
+          "subliminal techniques"
+        ],
+        "legal_caution": "",
+        "decision": "prohibits"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "I89-Q1",
+          "quote": "media law and industry self-regulation",
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf",
+          "supports": [
+            "hidden advertising"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "hidden advertising",
+          "supporting_quote_ids": [
+            "I89-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "I90",
+      "category": "Media Law & Self-Regulation",
+      "difficulty": "hard",
+      "question_type": "decision_support",
+      "question": "If I want practical guidance on recommended disclosure wording in different European countries, what resource does Brief #4 mention?",
+      "gold_answer": {
+        "summary": "It mentions EASA's DiscloseMe tool as a source of recommended transparency disclosures across European countries.",
+        "key_points": [
+          "EASA",
+          "DiscloseMe",
+          "country-specific disclosure recommendations"
+        ],
+        "legal_caution": "",
+        "decision": "consult DiscloseMe and national authorities"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "I90-Q1",
+          "quote": "media law and industry self-regulation",
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf",
+          "supports": [
+            "EASA"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "EASA",
+          "supporting_quote_ids": [
+            "I90-Q1"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #4: How European consumer law interacts with media law and self-regulation",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%204.pdf"
+        }
+      ],
+      "requires_multi_hop": false,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "M91",
+      "category": "Multi-hop",
+      "difficulty": "hard",
+      "question_type": "multi_hop",
+      "question": "I receive free clothing from a brand, post about it, and also sell my own clothing online. What two broad areas of the Hub should I examine?",
+      "gold_answer": {
+        "summary": "The advertising side raises monetisation/disclosure issues, while the own-sales side raises trader, information and consumer-contract duties.",
+        "key_points": [
+          "free goods can be barter/advertising",
+          "selling creates seller information duties"
+        ],
+        "legal_caution": "",
+        "decision": "examine both"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "M91-Q1",
+          "quote": "Barters: you receive things ... in exchange for advertising",
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf",
+          "supports": [
+            "free goods can form barter"
+          ],
+          "quotation_quality": "direct_support"
+        },
+        {
+          "quote_id": "M91-Q2",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "seller information duties"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "free goods can form barter",
+          "supporting_quote_ids": [
+            "M91-Q1"
+          ]
+        },
+        {
+          "claim": "seller information duties",
+          "supporting_quote_ids": [
+            "M91-Q2"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #5: Content monetisation business models and best practices",
+          "source_url": "https://commission.europa.eu/document/download/df5a20ca-48b5-4666-a0b5-b1c840173915_en?filename=Legal+brief+5.pdf"
+        },
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": true,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "M92",
+      "category": "Multi-hop",
+      "difficulty": "hard",
+      "question_type": "multi_hop",
+      "question": "I receive an affiliate commission and also use a third party's photograph in the same sponsored post. What different legal areas should I check?",
+      "gold_answer": {
+        "summary": "Check advertising disclosure for the affiliate relationship and IP/copyright permissions for the photograph.",
+        "key_points": [
+          "affiliate marketing/disclosure",
+          "third-party copyright"
+        ],
+        "legal_caution": "",
+        "decision": "check both"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "M92-Q1",
+          "quote": "Point 11 prohibits undisclosed advertorials.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "affiliate marketing requires disclosure"
+          ],
+          "quotation_quality": "direct_support"
+        },
+        {
+          "quote_id": "M92-Q2",
+          "quote": "influencers should respect the IP of others",
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf",
+          "supports": [
+            "third-party use may require a licence"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "affiliate marketing requires disclosure",
+          "supporting_quote_ids": [
+            "M92-Q1"
+          ]
+        },
+        {
+          "claim": "third-party use may require a licence",
+          "supporting_quote_ids": [
+            "M92-Q2"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        },
+        {
+          "document": "Legal brief #9: Influencers and intellectual property - introduction and focus on copyright",
+          "source_url": "https://commission.europa.eu/document/download/63d30cd4-078c-47ca-b901-4355a29e63df_en?filename=Introduction+to+IP+and+focus+on+copyright+-+legal+brief+-+final.pdf"
+        }
+      ],
+      "requires_multi_hop": true,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "M93",
+      "category": "Multi-hop",
+      "difficulty": "hard",
+      "question_type": "multi_hop",
+      "question": "I sell an online course and promote it through paid social posts. What separate obligations should I consider?",
+      "gold_answer": {
+        "summary": "Consider advertising disclosure for the paid promotion and consumer information duties for the online course sale.",
+        "key_points": [
+          "advertising disclosure",
+          "service information duties"
+        ],
+        "legal_caution": "",
+        "decision": "consider both"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "M93-Q1",
+          "quote": "you need to make sure your audiences understand that it’s advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "advertising content needs disclosure"
+          ],
+          "quotation_quality": "direct_support"
+        },
+        {
+          "quote_id": "M93-Q2",
+          "quote": "You need to indicate the main features of the goods or services.",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "service features must be described"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "advertising content needs disclosure",
+          "supporting_quote_ids": [
+            "M93-Q1"
+          ]
+        },
+        {
+          "claim": "service features must be described",
+          "supporting_quote_ids": [
+            "M93-Q2"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        },
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": true,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "M94",
+      "category": "Multi-hop",
+      "difficulty": "hard",
+      "question_type": "multi_hop",
+      "question": "A creator receives a free hotel stay for promotion and then sells a related travel guide. What legal roles can arise?",
+      "gold_answer": {
+        "summary": "The creator can be acting as an advertiser in the hotel relationship and as a seller in relation to the guide.",
+        "key_points": [
+          "barter/advertising",
+          "seller information duties"
+        ],
+        "legal_caution": "",
+        "decision": "both roles"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "M94-Q1",
+          "quote": "there needs to be a clear disclosure of advertising.",
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf",
+          "supports": [
+            "free service linked to advertising can require disclosure"
+          ],
+          "quotation_quality": "direct_support"
+        },
+        {
+          "quote_id": "M94-Q2",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "selling goods/services creates information duties"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "free service linked to advertising can require disclosure",
+          "supporting_quote_ids": [
+            "M94-Q1"
+          ]
+        },
+        {
+          "claim": "selling goods/services creates information duties",
+          "supporting_quote_ids": [
+            "M94-Q2"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #6: How to disclose advertising on social media",
+          "source_url": "https://commission.europa.eu/system/files/2023-10/Legal%20brief%206.pdf"
+        },
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": true,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "M95",
+      "category": "Multi-hop",
+      "difficulty": "hard",
+      "question_type": "multi_hop",
+      "question": "A creator has no company registration but regularly receives brand benefits and sells merchandise. How should trader status and seller obligations be analysed together?",
+      "gold_answer": {
+        "summary": "Lack of incorporation does not automatically prevent trader status; regular commercial activity and direct sales can trigger consumer-law obligations.",
+        "key_points": [
+          "natural persons can be traders",
+          "regular monetisation",
+          "direct sales information duties"
+        ],
+        "legal_caution": "",
+        "decision": "potentially trader with seller obligations"
+      },
+      "gold_quotations": [
+        {
+          "quote_id": "M95-Q1",
+          "quote": "This is not a checklist that ends in a yes-or-no answer.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "individuals can be traders"
+          ],
+          "quotation_quality": "direct_support"
+        },
+        {
+          "quote_id": "M95-Q2",
+          "quote": "the chances are very high that you are a trader.",
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf",
+          "supports": [
+            "regular benefits make trader status more likely"
+          ],
+          "quotation_quality": "direct_support"
+        },
+        {
+          "quote_id": "M95-Q3",
+          "quote": "you need to know about what information you must share with your audience",
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf",
+          "supports": [
+            "seller information duties"
+          ],
+          "quotation_quality": "direct_support"
+        }
+      ],
+      "claim_evidence_mapping": [
+        {
+          "claim": "individuals can be traders",
+          "supporting_quote_ids": [
+            "M95-Q1"
+          ]
+        },
+        {
+          "claim": "regular benefits make trader status more likely",
+          "supporting_quote_ids": [
+            "M95-Q2"
+          ]
+        },
+        {
+          "claim": "seller information duties",
+          "supporting_quote_ids": [
+            "M95-Q3"
+          ]
+        }
+      ],
+      "gold_sources": [
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        },
+        {
+          "document": "Legal brief #3: When is an influencer a 'trader'?",
+          "source_url": "https://commission.europa.eu/document/download/55e73447-8c21-4728-a42b-05bd030f7627_en?filename=Legal+brief+3.pdf"
+        },
+        {
+          "document": "Legal brief #8: Influencers as sellers - information duties and consumer contracts",
+          "source_url": "https://commission.europa.eu/document/download/d99a7b82-35df-44e0-aa9c-2ce1722c39e8_en?filename=Legal+brief+8.pdf"
+        }
+      ],
+      "requires_multi_hop": true,
+      "unanswerable": false,
+      "decision_support_expectations": {
+        "should_identify": [],
+        "should_warn_about": [],
+        "should_not_claim": []
+      }
+    },
+    {
+      "id": "U96",
+      "category": "Unanswerable",
+      "difficulty": "hard",
+      "question_type": "unanswerable",
+      "question": "What exact maximum fine will a Dutch influencer receive for a specific undisclosed Instagram advertisement?",
+      "gold_answer": {
+        "summary": "The Hub materials do not provide enough information to determine an exact fine for a specific Dutch case.",
+        "key_points": [
+          "State the limitation of the available corpus",
+          "Do not invent a jurisdiction-specific or exact answer"
+        ],
+        "legal_caution": "The chatbot should distinguish corpus limitations from legal conclusions.",
+        "decision": "insufficient_information"
+      },
+      "gold_quotations": [],
+      "claim_evidence_mapping": [],
+      "gold_sources": [],
+      "requires_multi_hop": false,
+      "unanswerable": true,
+      "decision_support_expectations": {
+        "should_identify": [
+          "missing jurisdiction-specific or case-specific evidence"
+        ],
+        "should_warn_about": [
+          "need to consult the relevant national authority or qualified legal adviser where appropriate"
+        ],
+        "should_not_claim": [
+          "an exact fine, deadline, tax amount, or guaranteed enforcement outcome"
+        ]
+      }
+    },
+    {
+      "id": "U97",
+      "category": "Unanswerable",
+      "difficulty": "hard",
+      "question_type": "unanswerable",
+      "question": "What exact tax amount must a Dutch influencer pay on a free product received from a brand?",
+      "gold_answer": {
+        "summary": "The Hub is not a tax guide and does not provide an exact tax calculation for a free product.",
+        "key_points": [
+          "State the limitation of the available corpus",
+          "Do not invent a jurisdiction-specific or exact answer"
+        ],
+        "legal_caution": "The chatbot should distinguish corpus limitations from legal conclusions.",
+        "decision": "insufficient_information"
+      },
+      "gold_quotations": [],
+      "claim_evidence_mapping": [],
+      "gold_sources": [],
+      "requires_multi_hop": false,
+      "unanswerable": true,
+      "decision_support_expectations": {
+        "should_identify": [
+          "missing jurisdiction-specific or case-specific evidence"
+        ],
+        "should_warn_about": [
+          "need to consult the relevant national authority or qualified legal adviser where appropriate"
+        ],
+        "should_not_claim": [
+          "an exact fine, deadline, tax amount, or guaranteed enforcement outcome"
+        ]
+      }
+    },
+    {
+      "id": "U98",
+      "category": "Unanswerable",
+      "difficulty": "hard",
+      "question_type": "unanswerable",
+      "question": "Will the Dutch Authority for Consumers and Markets definitely fine me for my particular Instagram post?",
+      "gold_answer": {
+        "summary": "The materials cannot establish a definite enforcement outcome for a specific person's post.",
+        "key_points": [
+          "State the limitation of the available corpus",
+          "Do not invent a jurisdiction-specific or exact answer"
+        ],
+        "legal_caution": "The chatbot should distinguish corpus limitations from legal conclusions.",
+        "decision": "insufficient_information"
+      },
+      "gold_quotations": [],
+      "claim_evidence_mapping": [],
+      "gold_sources": [],
+      "requires_multi_hop": false,
+      "unanswerable": true,
+      "decision_support_expectations": {
+        "should_identify": [
+          "missing jurisdiction-specific or case-specific evidence"
+        ],
+        "should_warn_about": [
+          "need to consult the relevant national authority or qualified legal adviser where appropriate"
+        ],
+        "should_not_claim": [
+          "an exact fine, deadline, tax amount, or guaranteed enforcement outcome"
+        ]
+      }
+    },
+    {
+      "id": "U99",
+      "category": "Unanswerable",
+      "difficulty": "hard",
+      "question_type": "unanswerable",
+      "question": "What is the exact deadline for appealing an influencer advertising sanction in France?",
+      "gold_answer": {
+        "summary": "The Hub's general materials do not provide enough case-specific French procedural information to answer this exactly.",
+        "key_points": [
+          "State the limitation of the available corpus",
+          "Do not invent a jurisdiction-specific or exact answer"
+        ],
+        "legal_caution": "The chatbot should distinguish corpus limitations from legal conclusions.",
+        "decision": "insufficient_information"
+      },
+      "gold_quotations": [],
+      "claim_evidence_mapping": [],
+      "gold_sources": [],
+      "requires_multi_hop": false,
+      "unanswerable": true,
+      "decision_support_expectations": {
+        "should_identify": [
+          "missing jurisdiction-specific or case-specific evidence"
+        ],
+        "should_warn_about": [
+          "need to consult the relevant national authority or qualified legal adviser where appropriate"
+        ],
+        "should_not_claim": [
+          "an exact fine, deadline, tax amount, or guaranteed enforcement outcome"
+        ]
+      }
+    },
+    {
+      "id": "U100",
+      "category": "Unanswerable",
+      "difficulty": "hard",
+      "question_type": "unanswerable",
+      "question": "Is this exact influencer post legally compliant under every EU Member State's national law?",
+      "gold_answer": {
+        "summary": "The Hub explains that national rules and practices can differ, so the available material cannot support a universal Member-State-by-Member-State conclusion.",
+        "key_points": [
+          "State the limitation of the available corpus",
+          "Do not invent a jurisdiction-specific or exact answer"
+        ],
+        "legal_caution": "The chatbot should distinguish corpus limitations from legal conclusions.",
+        "decision": "insufficient_information"
+      },
+      "gold_quotations": [],
+      "claim_evidence_mapping": [],
+      "gold_sources": [],
+      "requires_multi_hop": false,
+      "unanswerable": true,
+      "decision_support_expectations": {
+        "should_identify": [
+          "missing jurisdiction-specific or case-specific evidence"
+        ],
+        "should_warn_about": [
+          "need to consult the relevant national authority or qualified legal adviser where appropriate"
+        ],
+        "should_not_claim": [
+          "an exact fine, deadline, tax amount, or guaranteed enforcement outcome"
+        ]
+      }
+    }
+  ]
+}
