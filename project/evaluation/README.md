@@ -95,6 +95,19 @@ Before finalizing, the generator performs:
 9. ✓ Multi-hop verification
 10. ✓ Decision-support grounding
 
+## Run the chatbot evaluation
+
+Start the RAG server first, then run from the `project` directory:
+
+```bash
+python evaluation/run_batch_evaluation.py
+```
+
+This reads `evaluation/dataset/evaluation_dataset_quote_updated.json` and writes
+`evaluation/output/evaluation_results.json`. Each result preserves the dataset
+metadata (`id`, `category`, `difficulty`, `question_type`, and `question`) and
+stores the complete `/answer` response under `response`.
+
 ## File Structure
 
 ```
