@@ -110,6 +110,41 @@ def test_retriever_answer_uses_llm(monkeypatch: Any) -> None:
     fake_llm_client.generate_answer.assert_called_once()
 
 
+def test_answer_translates_when_output_language_differs(monkeypatch: Any) -> None:
+    fake_llm_client = MagicMock()
+    fake_llm_client.generate_answer.return_value = "Dit is een antwoord."
+    fake_translator = MagicMock()
+    fake_translator.translate.return_value = "This is an answer."
+
+    fake_vector_store = MagicMock()
+    fake_vector_store.get_collection.return_value = FakeCollection()
+    monkeypatch.setattr("src.retriever.EmbeddingModel", lambda: MagicMock())
+    monkeypatch.setattr("src.retriever.VectorStore", lambda *args, **kwargs: fake_vector_store)
+    monkeypatch.setattr("src.retriever.TranslationModel", lambda: fake_translator)
+    monkeypatch.setattr("src.retriever.LLMClient", lambda: fake_llm_client)
+    monkeypatch.setattr("src.retriever.detect_language", lambda text: "nl")
+
+    retriever = Retriever(vector_dir=Path("vector_db"))
+    chunk = RetrievalResult(
+        similarity=0.99,
+        chunk_id="chunk-1",
+        heading="Heading",
+        paragraph_index=1,
+        original_paragraph="Original text.",
+        translated_paragraph="",
+        source_name="source",
+        source_url="https://example.com",
+        quotation="Original text.",
+        quotation_language="nl",
+    )
+
+    answer_text, _, language = retriever.answer("What is the rule?", results=[chunk], language="en")
+
+    assert language == "en"
+    assert answer_text == "This is an answer."
+    fake_translator.translate.assert_called_once_with("Dit is een antwoord.")
+
+
 def test_answer_reuses_provided_results(monkeypatch: Any) -> None:
     """answer() must reuse caller-supplied RAG chunks instead of re-fetching."""
     fake_llm_client = MagicMock()
@@ -151,6 +186,8 @@ def test_answer_reuses_provided_results(monkeypatch: Any) -> None:
     prompt = fake_llm_client.generate_answer.call_args.args[0]
     assert "chunk-7" in prompt
     assert "Dutch" in prompt  # dynamic target-language name
+    assert "European influencer marketing regulations" in prompt
+    assert "### Evidence" in prompt
 
 
 def test_select_quotation_prefers_exact_user_language() -> None:

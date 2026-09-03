@@ -27,6 +27,8 @@ class RetrievalResult:
 
 
 class Retriever:
+    _prompt_template_path = Path(__file__).resolve().with_name("prompt.txt")
+
     def __init__(
         self,
         vector_dir: Path,
@@ -187,27 +189,15 @@ class Retriever:
     def build_prompt(self, question: str, chunks: List[RetrievalResult], language: Optional[str] = None) -> str:
         max_chunk_length = 3000
         language = self._detect_language_code(language or self.last_language or detect_language(question))
-        # Keep the language the model must answer/quote in aligned with the
-        # question. The name is resolved at query time so any supported language
-        # works (the fallback set is not locked to a fixed list).
         target_lang_name = language_name(language) or language
         language_instruction = (
-            f"Answer in the same language ({target_lang_name}, ISO code: {language}) as the question.\n"
-            f"The answer, every quotation, and every citation must be written in {target_lang_name} ({language})."
+            f"Answer in the language requested by the user: {target_lang_name} (ISO code: {language})."
         )
         prompt_lines = [
-            "You are a helpful assistant that answers questions about Dutch influencer marketing regulations using only the provided source material.",
-            "Do not invent any information. If the answer cannot be found in the provided text, say you do not know.",
-            language_instruction,
-            "CRITICAL CITATION RULES:",
-            "- For every factual claim, include a short exact quote in quotation marks with a citation number in square brackets.",
-            "- Number citations starting from 1 based on the order chunks appear below: Chunk 1 = [1], Chunk 2 = [2], etc.",
-            "- Only cite chunks that are actually listed below.",
-            f"- Quotes must be kept in the same language ({target_lang_name}); if the provided text is not yet in that language, render it in the question's language.",
-            "Do not add any extra explanation beyond the answer and the evidence quotes. Only include evidence quotes that are actually used to support your answer.",
-            "Do not invent quotes. Use only the source text provided below.",
+            self._prompt_template_path.read_text(encoding="utf-8").format(
+                language_instruction=language_instruction
+            ).rstrip(),
             "",
-            "Sources:",
         ]
 
         for index, chunk in enumerate(chunks, start=1):
@@ -246,4 +236,10 @@ class Retriever:
         lang = self._detect_language_code(language or self.last_language or detect_language(question))
         prompt = self.build_prompt(question, results, language=lang)
         answer_text = self.llm.generate_answer(prompt, max_tokens=max_tokens)
+        # The model can occasionally ignore the requested language. Reuse the
+        # existing translation flow only for that mismatch, not for every answer.
+        if answer_text.strip() and detect_language(answer_text) != lang:
+            translated = self.translator.translate(answer_text)
+            if isinstance(translated, str) and translated.strip():
+                answer_text = translated
         return answer_text, results, lang
