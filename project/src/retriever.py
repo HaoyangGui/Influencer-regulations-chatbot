@@ -187,7 +187,7 @@ class Retriever:
         return text[: max_length - 3].rstrip() + "..."
 
     def build_prompt(self, question: str, chunks: List[RetrievalResult], language: Optional[str] = None) -> str:
-        max_chunk_length = 3000
+        max_chunk_length = 10000
         language = self._detect_language_code(language or self.last_language or detect_language(question))
         target_lang_name = language_name(language) or language
         language_instruction = (

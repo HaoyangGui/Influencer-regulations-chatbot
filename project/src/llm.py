@@ -12,7 +12,7 @@ import litellm
 class LLMClient:
     _metadata_log_path = Path(__file__).resolve().parent.parent / "logs" / "llm_responses.jsonl"
 
-    def __init__(self, model: str = "openai/gpt-3.5-turbo") -> None:
+    def __init__(self, model: str = "openai/gpt-5.6-luna") -> None:
         self.model = os.getenv("LLM_MODEL", model)
         self.api_key = os.getenv("OPENAI_API_KEY")
         self.base_url = os.getenv("LLM_API_BASE_URL")
@@ -94,10 +94,12 @@ class LLMClient:
         request_kwargs: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
-            "temperature": temperature,
             "max_completion_tokens": max_tokens,
             "stream": False,
         }
+        # GPT-5 models only support their default temperature value.
+        if not self.model.lower().startswith("openai/gpt-5"):
+            request_kwargs["temperature"] = temperature
 
         if self.api_key:
             request_kwargs["api_key"] = self.api_key
