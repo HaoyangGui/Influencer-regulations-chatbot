@@ -97,8 +97,8 @@ class LLMClient:
             "max_completion_tokens": max_tokens,
             "stream": False,
         }
-        # GPT-5 models only support their default temperature value.
-        if not self.model.lower().startswith("openai/gpt-5"):
+        # GPT-5/GPT-6 reasoning models only support their default temperature.
+        if not self.model.lower().startswith(("openai/gpt-5", "openai/gpt-6")):
             request_kwargs["temperature"] = temperature
 
         if self.api_key:
